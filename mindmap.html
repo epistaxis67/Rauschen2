@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rauschen — eine Systematik</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root{
+    --bg:#0d1b1e;
+    --bg2:#0a1518;
+    --ink:#eaf2f0;
+    --muted:#8aa6a3;
+    --line:#20393b;
+    --concrete:#5ec6c0;   /* konkret / messbar */
+    --episteme:#e0a458;   /* epistemologisch */
+    --hot:#f06d6d;        /* Signal-Potenzial */
+    --card:#122528;
+    --card2:#0f2023;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:
+      radial-gradient(1200px 700px at 15% -10%, #14313033 0, transparent 60%),
+      radial-gradient(1000px 600px at 90% 0%, #2a1e0e40 0, transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:'Space Grotesk',system-ui,sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    padding:48px 32px 96px;
+  }
+  .wrap{max-width:1180px;margin:0 auto}
+
+  header{margin-bottom:14px}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:14px;
+  }
+  h1{
+    font-family:'Fraunces',serif;font-weight:900;
+    font-size:clamp(38px,6vw,74px);line-height:.98;letter-spacing:-.02em;
+    margin:0 0 10px;
+  }
+  h1 .n{font-style:italic;font-weight:400}
+  .lede{max-width:660px;color:#c3d6d3;font-size:17px}
+  .lede b{color:var(--ink);font-weight:600}
+
+  /* axis */
+  .axis{
+    display:flex;align-items:center;gap:18px;
+    margin:38px 0 30px;padding:16px 20px;
+    border:1px solid var(--line);border-radius:14px;
+    background:linear-gradient(90deg,#12282b 0%, #1a2320 100%);
+  }
+  .axis .pole{flex:1}
+  .axis .pole h3{margin:0 0 3px;font-size:15px;font-family:'JetBrains Mono',monospace;letter-spacing:.04em}
+  .axis .pole p{margin:0;font-size:13.5px;color:var(--muted)}
+  .axis .pole.left h3{color:var(--concrete)}
+  .axis .pole.right{text-align:right}
+  .axis .pole.right h3{color:var(--episteme)}
+  .axis .bar{
+    flex:0 0 200px;height:8px;border-radius:6px;
+    background:linear-gradient(90deg,var(--concrete),#3f6f78 45%,#8a6a3e 55%,var(--episteme));
+  }
+  @media(max-width:720px){
+    .axis{flex-direction:column;align-items:stretch}
+    .axis .pole.right{text-align:left}
+    .axis .bar{flex:none;width:100%}
+  }
+
+  .legend{display:flex;flex-wrap:wrap;gap:18px;margin-bottom:34px;font-size:13px;color:var(--muted)}
+  .legend span{display:inline-flex;align-items:center;gap:7px}
+  .dot{width:11px;height:11px;border-radius:50%;display:inline-block}
+  .dot.c{background:var(--concrete)}
+  .dot.e{background:var(--episteme)}
+  .dot.h{background:var(--hot);box-shadow:0 0 0 3px #f06d6d22}
+
+  /* branches */
+  .branch{
+    border:1px solid var(--line);border-radius:16px;margin-bottom:16px;
+    background:linear-gradient(180deg,var(--card),var(--card2));
+    overflow:hidden;
+  }
+  .branch > summary{
+    list-style:none;cursor:pointer;padding:20px 22px;
+    display:flex;align-items:flex-start;gap:16px;
+    transition:background .2s;
+  }
+  .branch > summary::-webkit-details-marker{display:none}
+  .branch > summary:hover{background:#16303322}
+  .idx{
+    font-family:'Fraunces',serif;font-weight:900;font-size:30px;line-height:1;
+    min-width:52px;color:var(--ink);opacity:.28;
+  }
+  .btitle{flex:1}
+  .btitle h2{
+    margin:0 0 5px;font-family:'Fraunces',serif;font-weight:600;
+    font-size:22px;letter-spacing:-.01em;
+  }
+  .btitle .sub{color:var(--muted);font-size:14px}
+  .pos{
+    flex:0 0 auto;align-self:center;width:120px;height:6px;border-radius:5px;
+    background:#20393b;position:relative;overflow:hidden;
+  }
+  .pos i{position:absolute;top:-4px;width:14px;height:14px;border-radius:50%;
+    transform:translateX(-50%);border:2px solid var(--bg2)}
+  .chev{align-self:center;color:var(--muted);font-size:13px;transition:transform .25s;font-family:'JetBrains Mono',monospace}
+  .branch[open] .chev{transform:rotate(90deg)}
+
+  .body{padding:2px 22px 22px 90px}
+  @media(max-width:640px){.body{padding-left:22px}}
+  .body > .intro{color:#b9ccc9;font-size:14.5px;margin:0 0 18px;max-width:760px}
+
+  .fields{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+  .field{
+    border:1px solid var(--line);border-radius:12px;padding:14px 15px;
+    background:#0e2023;position:relative;
+  }
+  .field.hot{border-color:#f06d6d55;background:linear-gradient(180deg,#1c1618,#0e2023)}
+  .field h4{
+    margin:0 0 6px;font-size:15px;font-weight:600;
+    display:flex;align-items:center;gap:8px;
+  }
+  .field h4 .tag{
+    margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:9.5px;
+    letter-spacing:.1em;text-transform:uppercase;padding:2px 6px;border-radius:20px;
+    border:1px solid currentColor;white-space:nowrap;
+  }
+  .tag.c{color:var(--concrete)}
+  .tag.e{color:var(--episteme)}
+  .field p{margin:0;font-size:13px;color:var(--muted);line-height:1.5}
+  .field .how{color:#cfe0dd}
+  .field .sig{
+    margin-top:9px;padding-top:9px;border-top:1px dashed #ffffff14;
+    font-size:12px;color:#f2a5a5;display:flex;gap:7px;align-items:flex-start;
+  }
+  .field .sig b{color:var(--hot);font-weight:600}
+  .flame{flex:0 0 auto}
+
+  .deepdive-label{
+    display:flex;align-items:center;gap:16px;margin:34px 2px 18px;
+  }
+  .deepdive-label .line{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent)}
+  .deepdive-label .txt{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.24em;
+    text-transform:uppercase;color:var(--muted);white-space:nowrap;
+  }
+  .branch.deep{
+    border-color:#2c4a44;
+    background:linear-gradient(180deg,#0f2622,#0d1f22);
+    box-shadow:0 0 0 1px #5ec6c00d, 0 10px 40px -20px #5ec6c033;
+  }
+  .branch.deep .idx{opacity:.4;color:var(--concrete)}
+  .synth{
+    margin:18px 0 2px;padding:15px 17px;border-radius:12px;
+    background:#0c1c1f;border:1px solid #1c3a3c;
+    font-size:13.5px;color:#c3d6d3;line-height:1.55;
+  }
+  .synth b{color:var(--ink);font-weight:600}
+  .hl{color:var(--concrete);font-weight:500}
+
+  .closing{
+    margin-top:40px;border:1px solid var(--line);border-radius:16px;
+    padding:26px 26px;background:linear-gradient(135deg,#12282b,#171f1c);
+  }
+  .closing h3{font-family:'Fraunces',serif;font-weight:600;font-size:21px;margin:0 0 12px}
+  .closing p{color:#c3d6d3;font-size:14.5px;margin:0 0 10px;max-width:820px}
+  .closing .q{color:var(--hot);font-weight:600}
+  .foot{margin-top:26px;color:var(--muted);font-size:12px;font-family:'JetBrains Mono',monospace}
+</style>
+
+<style id="shared-nav-css">
+  .topnav{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);
+    background:#0b171acc;border-bottom:1px solid #20393b;margin:-48px -32px 34px}
+  .topnav .inner{max-width:1100px;margin:0 auto;padding:12px 32px;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+  .topnav .brand{font-family:'Fraunces',serif;font-weight:900;font-size:16px;letter-spacing:-.01em;margin-right:4px;color:#eaf2f0;text-decoration:none}
+  .topnav .brand .n{font-style:italic;font-weight:400}
+  .topnav a.navlink{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.04em;
+    color:#8aa6a3;text-decoration:none;padding:4px 0;border-bottom:2px solid transparent;transition:.15s}
+  .topnav a.navlink:hover{color:#eaf2f0}
+  .topnav a.navlink.active{color:#eaf2f0;border-bottom-color:#f06d6d}
+  @media(max-width:820px){.topnav .inner{gap:13px}.topnav .brand{width:100%}}
+</style>
+
+</head>
+<body>
+<nav class="topnav"><div class="inner"><a class="brand" href="index.html">Das <span class="n">Rauschen</span></a><a class="navlink" href="index.html">Manifest</a><a class="navlink active" href="mindmap.html">Systematik</a><a class="navlink" href="geraete.html">Ger&auml;te</a><a class="navlink" href="versuche.html">Versuche</a><a class="navlink" href="kontakte.html">Kontakte&nbsp;DE</a><a class="navlink" href="international.html">International</a><a class="navlink" href="fragen.html">Fragen</a><a class="navlink" href="medien.html">Literatur</a></div></nav>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Eine Systematik · von der Störgröße zum Signal</div>
+    <h1>Das <span class="n">Rauschen</span></h1>
+    <p class="lede">Eine Landkarte des Phänomens entlang einer einzigen Achse: vom <b>konkreten, messbaren Rauschbegriff</b> der Einzelwissenschaften bis zum <b>allgemeinen epistemologischen Problem</b> — wann ist eine Abweichung Störung, wann verkanntes Signal? Jeder Ast zeigt, <b>wie</b> Rauschen dort verstanden wird. Rot markiert, wo heute aus Datenmüll neues Signal entstehen könnte.</p>
+  </header>
+
+  <div class="axis">
+    <div class="pole left">
+      <h3>◆ KONKRET</h3>
+      <p>Rauschen als physikalisch fassbare, quantifizierbare Größe — Fluktuation, Fehler, Artefakt, das man misst und beziffert.</p>
+    </div>
+    <div class="bar"></div>
+    <div class="pole right">
+      <h3>EPISTEMOLOGISCH ◆</h3>
+      <p>Rauschen als Grenzbegriff — das, was ein System, ein Modell oder eine Kultur (noch) nicht als Bedeutung zu lesen vermag.</p>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span><i class="dot c"></i> eher konkreter Rauschbegriff</span>
+    <span><i class="dot e"></i> eher epistemologischer Rauschbegriff</span>
+    <span><i class="dot h"></i> „Signal-Potenzial“ — hier lohnt die gezielte Nachfrage</span>
+    <span style="font-family:'JetBrains Mono',monospace;font-size:11px">▸ Äste anklicken zum Aufklappen</span>
+  </div>
+
+  <!-- 1 -->
+  <details class="branch" open>
+    <summary>
+      <div class="idx">01</div>
+      <div class="btitle">
+        <h2>Physik & Metrologie</h2>
+        <div class="sub">Rauschen als fundamentale Grenze des Messens</div>
+      </div>
+      <div class="pos"><i style="left:12%;background:var(--concrete)"></i></div>
+      <div class="chev">▸</div>
+    </summary>
+    <div class="body">
+      <p class="intro">Der Ursprung des präzisen Begriffs. Hier ist Rauschen keine Metapher, sondern eine physikalische Realität mit eigener Statistik — und zugleich die Untergrenze dessen, was überhaupt messbar ist. Paradox: dasselbe Rauschen, das jede Messung begrenzt, wird selbst zur Referenzgröße.</p>
+      <div class="fields">
+        <div class="field">
+          <h4>Thermisches & Schrot­rauschen <span class="tag c">konkret</span></h4>
+          <p class="how">Zufallsbewegung von Ladungsträgern/Molekülen; klar hergeleitete Spektren (weißes Rauschen, 1/f).</p>
+        </div>
+        <div class="field hot">
+          <h4>Rausch­thermometrie <span class="tag c">konkret</span></h4>
+          <p class="how">Das thermische Rauschen selbst wird zum Thermometer — die Störung ist die Messgröße.</p>
+          <div class="sig"><span class="flame">▲</span><span><b>Signal:</b> Musterfall, wie eine Störgröße zur fundamentalen Referenz umgewidmet wird.</span></div>
+        </div>
+        <div class="field">
+          <h4>Mess­unsicherheit <span class="tag e">episteme</span></h4>
+          <p class="how">Rauschen als das, was den „wahren Wert“ prinzipiell verschleiert — Grenzbegriff jeder Metrologie.</p>
+        </div>
+        <div class="field hot">
+          <h4>Gravitations­wellen / Astronomie <span class="tag c">konkret</span></h4>
+          <p class="how">Detektoren graben Signale weit unter dem Rauschteppich aus; „Rauschjagd“ ist die eigentliche Arbeit.</p>
+          <div class="sig"><span class="flame">▲</span><span><b>Signal:</b> Historisch wurde hier mehrfach „Störung“ zur Entdeckung (Hintergrundstrahlung, Pulsare).</span></div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <!-- 2 -->
+  <details class="branch">
+    <summary>
+      <div class="idx">02</div>
+      <div class="btitle">
+        <h2>Leben & Messverfahren der Einzelwissenschaften</h2>
+        <div class="sub">Biologie, Medizin, Labor — Rauschen als Artefakt und als Vitalzeichen</div>
+      </div>
+      <div class="pos"><i style="left:30%;background:#7fbf9e"></i></div>
+      <div class="chev">▸</div>
+    </summary>
+    <div class="body">
+      <p class="intro">Hier kippt der Begriff am häufigsten: Was ein Messparadigma als Kontamination, Artefakt oder biologisches „Grundrauschen“ wegfiltert, erweist sich immer wieder als die eigentlich interessante Information. Das ist dein zentraler Fundort.</p>
+      <div class="fields">
+        <div class="field hot">
+          <h4>Neuronale Variabilität <span class="tag c">konkret</span></h4>
+          <p class="how">Trial-zu-Trial-Streuung, Spontanfeuern — lange weggemittelt, heute als Zustands- und Vorhersagemarker gelesen.</p>
+          <div class="sig"><span class="flame">▲</span><span><b>Signal:</b> stochastische Resonanz — Rauschen hebt schwache Reize über die Schwelle.</span></div>
+        </div>
+        <div class="field hot">
+          <h4>Fragmentomik / „junk“-DNA <span class="tag c">konkret</span></h4>
+          <p class="how">Zellfreie DNA-Schnipsel galten als Abfall; Bruchmuster verraten Zellursprung.</p>
+          <div class="sig"><span class="flame">▲</span><span><b>Signal:</b> Basis der Krebsfrüherkennung aus Bluttests.</span></div>
+        </div>
+        <div class="field hot">
+          <h4>Physiolog. Fluktuation <span class="tag c">konkret</span></h4>
+          <p class="how">Herzraten-Variabilität, Mikrosakkaden, Ruhe-fMRT — einst „Zittern“, heute Funktionsmarker.</p>
+          <div class="sig"><span class="flame">▲</span><span><b>Signal:</b> Variabilität <i>selbst</i> als Diagnostik statt Mittelwert.</span></div>
+        </div>
+        <div class="field">
+          <h4>Kontamination / Artefakt <span class="tag e">episteme</span></h4>
+          <p class="how">„Bakterien in der Probe“, „Bewegungsartefakt“ — die Kategorie, unter der reale Signale verworfen werden (H. pylori, Mikrobiom).</p>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <!-- 3 -->
+  <details class="branch">
+    <summary>
+      <div class="idx">03</div>
+      <div class="btitle">
+        <h2>Information & Nachrichtentechnik</h2>
+        <div class="sub">Rauschen als Gegenbegriff zur Information (Shannon)</div>
+      </div>
+      <div class="pos"><i style="left:42%;background:#9db089"></i></div>
+      <div class="chev">▸</div>
+    </summary>
+    <div class="body">
+      <p class="intro">Die Achse, auf der der Begriff kippt. Shannon definiert Rauschen exakt relativ zum Kanal — was Rauschen ist, hängt davon ab, was übertragen werden soll. Ab hier ist Rauschen kein Naturphänomen mehr, sondern eine Relation.</p>
+      <div class="fields">
+        <div class="field">
+          <h4>Signal-Rausch-Verhältnis <span class="tag c">konkret</span></h4>
+          <p class="how">Quantifizierte Trennung von Nutz- und Störanteil; Filter, Detektion, Entrauschung.</p>
+        </div>
+        <div class="field hot">
+          <h4>Sensor­fusion / Crowdsensing <span class="tag c">konkret</span></h4>
+          <p class="how">Viele verrauschte Einzelsensoren mitteln sich zu einem Signal, das kein einzelner hat (√N-Gesetz).</p>
+          <div class="sig"><span class="flame">▲</span><span><b>Signal:</b> die technisch saubere Version „das Netzwerk nimmt mehr wahr“.</span></div>
+        </div>
+        <div class="field">
+          <h4>Kanal / Codierung <span class="tag e">episteme</span></h4>
+          <p class="how">Rauschen als das, gegen das Redundanz und Fehlerkorrektur überhaupt erst gebaut werden.</p>
+        </div>
+        <div class="field hot">
+          <h4>Echter Zufall (RNG) <span class="tag c">konkret</span></h4>
+          <p class="how">Physikalisches Rauschen als Rohstoff — Kryptographie erntet die Störung als Ressource.</p>
+          <div class="sig"><span class="flame">▲</span><span><b>Signal:</b> Grenzfall — hier ist Rauschen genau <i>deshalb</i> wertvoll, weil es kein Muster hat.</span></div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <!-- 4 -->
+  <details class="branch">
+    <summary>
+      <div class="idx">04</div>
+      <div class="btitle">
+        <h2>Daten, Statistik & KI</h2>
+        <div class="sub">Rauschen als Fehlerquelle — und als Werkzeug</div>
+      </div>
+      <div class="pos"><i style="left:52%;background:#c0a878"></i></div>
+      <div class="chev">▸</div>
+    </summary>
+    <div class="body">
+      <p class="intro">Die produktivste Umkehr der Gegenwart: In modernen ML-Verfahren ist Rauschen nicht Gegner, sondern Bedingung. Zugleich stellt die Statistik die kritische Kehrseite bereit — die Wissenschaft davon, wann ein „Muster“ bloß Rauschen ist.</p>
+      <div class="fields">
+        <div class="field hot">
+          <h4>Diffusionsmodelle <span class="tag c">konkret</span></h4>
+          <p class="how">Generierung <i>ist</i> Entrauschen — aus reinem Rauschen wird schrittweise ein Bild destilliert.</p>
+          <div class="sig"><span class="flame">▲</span><span><b>Signal:</b> Rauschen als produktives Substrat von Bedeutung.</span></div>
+        </div>
+        <div class="field">
+          <h4>Rauschen als Regularisierung <span class="tag c">konkret</span></h4>
+          <p class="how">Dropout, SGD-Zufall, Augmentation — gezielt injiziertes Rauschen verbessert Generalisierung.</p>
+        </div>
+        <div class="field hot">
+          <h4>Adversarial Noise <span class="tag e">episteme</span></h4>
+          <p class="how">Für Menschen unsichtbare Störung, für das Modell hochinformativ — „Rauschen“ ist beobachterrelativ.</p>
+          <div class="sig"><span class="flame">▲</span><span><b>Signal:</b> forensische Rausch-Signaturen erkennen KI-Fakes.</span></div>
+        </div>
+        <div class="field hot">
+          <h4>Metascience / p-Hacking <span class="tag e">episteme</span></h4>
+          <p class="how">Die Disziplin, die Pseudosignale entlarvt: wann ist ein Befund nur multiple-comparison-Rauschen?</p>
+          <div class="sig"><span class="flame">▲</span><span><b>Signal:</b> nötig, um echte kollektive Signale von attraktiv erzählten zu trennen.</span></div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <!-- 5 -->
+  <details class="branch">
+    <summary>
+      <div class="idx">05</div>
+      <div class="btitle">
+        <h2>Kollektiv & Ökonomie</h2>
+        <div class="sub">Rauschen als überindividuelles, aggregierbares Phänomen</div>
+      </div>
+      <div class="pos"><i style="left:64%;background:#d0a668"></i></div>
+      <div class="chev">▸</div>
+    </summary>
+    <div class="body">
+      <p class="intro">Hier wird Rauschen sozial. Unabhängige individuelle Fehler löschen sich bei Aggregation aus — daraus entsteht ein Gruppensignal, das kein Einzelner besitzt. Genau der Mechanismus, an dem sich seriöse Wisdom-of-Crowds von mystifizierten Ansätzen scheidet.</p>
+      <div class="fields">
+        <div class="field hot">
+          <h4>Emergent Sensing / Schwärme <span class="tag c">konkret</span></h4>
+          <p class="how">Reize unter der individuellen Wahrnehmungsschwelle werden erst durch soziale Kopplung „sichtbar“.</p>
+          <div class="sig"><span class="flame">▲</span><span><b>Signal:</b> Kern deiner Frage — Gruppe als Sinnesorgan.</span></div>
+        </div>
+        <div class="field hot">
+          <h4>Noise Trading (Finanzmarkt) <span class="tag e">episteme</span></h4>
+          <p class="how">Märkte funktionieren nur, weil viele auf Rauschen statt Information handeln (F. Black).</p>
+          <div class="sig"><span class="flame">▲</span><span><b>Signal:</b> ökonomisch reifste Theorie der Signal-Extraktion aus Rauschen.</span></div>
+        </div>
+        <div class="field hot">
+          <h4>Wisdom of Crowds <span class="tag c">konkret</span></h4>
+          <p class="how">Median vieler falscher Schätzungen trifft; Prognosemärkte monetarisieren das bereits.</p>
+          <div class="sig"><span class="flame">▲</span><span><b>Signal:</b> belastbare, verkaufbare Version des Netzwerk-Gedankens.</span></div>
+        </div>
+        <div class="field">
+          <h4>Gerücht & Pseudosignal <span class="tag e">episteme</span></h4>
+          <p class="how">Derselbe Mechanismus erzeugt bei Menschen auch geteilte <i>falsche</i> Muster — die Warngrenze.</p>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <!-- 6 -->
+  <details class="branch">
+    <summary>
+      <div class="idx">06</div>
+      <div class="btitle">
+        <h2>Medien-, Kultur- & Wissenschaftstheorie</h2>
+        <div class="sub">Rauschen als konstitutives Drittes und als Geschichte</div>
+      </div>
+      <div class="pos"><i style="left:82%;background:var(--episteme)"></i></div>
+      <div class="chev">▸</div>
+    </summary>
+    <div class="body">
+      <p class="intro">Der voll epistemologische Pol. Rauschen ist hier nicht Defizit, sondern Bedingung: die Störung, die die Systemgrenze erst herstellt, und der historisch wandelbare Ort, an dem eine Kultur zieht zwischen Sinn und Un-Sinn.</p>
+      <div class="fields">
+        <div class="field">
+          <h4>Der Parasit (Serres) <span class="tag e">episteme</span></h4>
+          <p class="how">Rauschen als „eingeschlossenes Drittes“ — weder Sender noch Empfänger, das Kommunikation erst ermöglicht.</p>
+        </div>
+        <div class="field">
+          <h4>Medienarchäologie (Kittler) <span class="tag e">episteme</span></h4>
+          <p class="how">Rauschen als Spur der Materialität des Mediums, die sich dem Diskurs entzieht.</p>
+        </div>
+        <div class="field">
+          <h4>Systemtheorie (Luhmann) <span class="tag e">episteme</span></h4>
+          <p class="how">Information/Rauschen relativ zur Systemgrenze — nicht objektiv, sondern beobachterabhängig gesetzt.</p>
+        </div>
+        <div class="field hot">
+          <h4>Historische Epistemologie <span class="tag e">episteme</span></h4>
+          <p class="how">Wie wurde „background noise“ überhaupt zum Konzept? Die Geschichte des Übergangs Rauschen→Signal selbst.</p>
+          <div class="sig"><span class="flame">▲</span><span><b>Signal:</b> liefert das Raster, um heutige Kandidaten für den nächsten Übergang zu erkennen.</span></div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <!-- 7 -->
+  <details class="branch">
+    <summary>
+      <div class="idx">07</div>
+      <div class="btitle">
+        <h2>Ästhetik & Umwelt</h2>
+        <div class="sub">Rauschen als Material und als Zustandsanzeige</div>
+      </div>
+      <div class="pos"><i style="left:70%;background:#c79a72"></i></div>
+      <div class="chev">▸</div>
+    </summary>
+    <div class="body">
+      <p class="intro">Zwei angrenzende Felder, in denen Rauschen wieder positiv wird: als künstlerisches Rohmaterial und als ökologische Datenquelle, in der die „Kakophonie“ eines Lebensraums dessen Zustand verrät.</p>
+      <div class="fields">
+        <div class="field">
+          <h4>Noise als Kunstform <span class="tag e">episteme</span></h4>
+          <p class="how">Glitch, Störung, Noise-Musik — das Verworfene als ästhetisches und epistemisches Verfahren.</p>
+        </div>
+        <div class="field hot">
+          <h4>Soundscape / Bioakustik <span class="tag c">konkret</span></h4>
+          <p class="how">Aus dem akustischen „Grundrauschen“ eines Ökosystems einzelne Arten und dessen Gesundheit auslesen.</p>
+          <div class="sig"><span class="flame">▲</span><span><b>Signal:</b> Mustererkennung schlägt den menschlichen Beobachter — Crowdsensing der Natur.</span></div>
+        </div>
+        <div class="field">
+          <h4>Lärm als Umweltgröße <span class="tag c">konkret</span></h4>
+          <p class="how">Rauschen als zu regulierende Störung (Lärmkarten) — der rein negative Grenzfall.</p>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <div class="deepdive-label">
+    <span class="line"></span>
+    <span class="txt">Vertiefung · zwei Sonderuntersuchungen</span>
+    <span class="line"></span>
+  </div>
+
+  <!-- 8 -->
+  <details class="branch deep" open>
+    <summary>
+      <div class="idx">08</div>
+      <div class="btitle">
+        <h2>Messverfahren rund um Hirn &amp; Nerven</h2>
+        <div class="sub">Wo aktuelle Geräte messen — und wo im „Weggefilterten“ neues Signal steckt</div>
+      </div>
+      <div class="pos"><i style="left:38%;background:#7fbf9e"></i></div>
+      <div class="chev">▸</div>
+    </summary>
+    <div class="body">
+      <p class="intro">Breit gefasst: nicht nur klassische Neurowissenschaft, sondern jedes Verfahren, das elektrische, hämodynamische, magnetische oder chemische Aktivität von Hirn und Nerven erfasst. Der gemeinsame Nenner: Jede dieser Modalitäten kämpft mit einem großen Anteil an „physiologischem Rauschen“ und Artefakten — und genau dieser Anteil wird zunehmend zum eigentlichen Signal umgedeutet. Die Karten sind grob nach Reife des Übergangs geordnet.</p>
+      <div class="fields">
+        <div class="field hot">
+          <h4>Aperiodisches EEG (1/f) <span class="tag c">konkret</span></h4>
+          <p class="how">Der „aperiodische“ Untergrund des EEG galt buchstäblich als Grundrauschen, das man wegrechnet, um die Oszillationen freizulegen. Heute wird seine Steilheit (der „Exponent“) als Maß für das Verhältnis von Erregung zu Hemmung im Kortex gelesen.</p>
+          <div class="sig"><span class="flame">▲</span><span><b>Signal:</b> reifster Fall — das ehemalige Rauschen ist bereits ein etablierter Biomarker (siehe Ast 09).</span></div>
+        </div>
+        <div class="field hot">
+          <h4>Physiolog. Artefakte in fNIRS / wearable EEG <span class="tag c">konkret</span></h4>
+          <p class="how">Tragbare Stirn- und Ohr-Sensoren (fNIRS, Ohr-EEG, Kopfhörer-EEG) messen unter Alltagsbedingungen. Bewegung, Herzschlag, Atmung, Hautdurchblutung gelten als Störanteile, die man herausfiltert.</p>
+          <div class="sig"><span class="flame">▲</span><span><b>Signal:</b> genau diese „Störungen“ tragen Information über Autonomik &amp; Zustand — Kandidat für Umwidmung.</span></div>
+        </div>
+        <div class="field hot">
+          <h4>OPM-MEG &amp; neue Modalitäten <span class="tag c">konkret</span></h4>
+          <p class="how">Optisch gepumpte Magnetometer und photoakustische Verfahren erlauben tragbare, hochauflösende Messung. Neue Geräte = neue, noch unklassifizierte Störquellen (Crosstalk, Umgebungsfelder).</p>
+          <div class="sig"><span class="flame">▲</span><span><b>Signal:</b> bei jeder neuen Modalität ist zunächst unklar, was Artefakt und was Befund ist — das offenste Feld.</span></div>
+        </div>
+        <div class="field hot">
+          <h4>Autonomes NS / Vagus &amp; Peripherie <span class="tag c">konkret</span></h4>
+          <p class="how">Herzraten-Variabilität, elektrodermale Aktivität, Mikro-Muskelzittern (EMG). „Erweiterte“ Neuro-Messung jenseits des Schädels — lange als Grundrauschen der Körpersignale behandelt.</p>
+          <div class="sig"><span class="flame">▲</span><span><b>Signal:</b> Fenster auf Gehirn-Körper-Kopplung; die Peripherie als verkanntes neuronales Auslesefeld.</span></div>
+        </div>
+        <div class="field hot">
+          <h4>Darm-Hirn-Achse <span class="tag e">episteme</span></h4>
+          <p class="how">Mikrobielle Signaturen in Blut/Stuhl, einst als Kontamination verworfen, korrelieren mit Stimmung und Kognition — „neuronale“ Information an einem ganz unerwarteten Messort.</p>
+          <div class="sig"><span class="flame">▲</span><span><b>Signal:</b> verschiebt die Grenze dessen, was überhaupt als „Nerven-Messung“ zählt.</span></div>
+        </div>
+        <div class="field">
+          <h4>Spontane / Ruhe-Aktivität <span class="tag e">episteme</span></h4>
+          <p class="how">Aktivität ohne Aufgabe (Default Mode Network, Spontanfeuern) — der historische Musterfall, an dem sich „Rauschen wird Signal“ zuerst zeigte. Referenzpunkt für alle Karten hier.</p>
+        </div>
+      </div>
+      <p class="synth"><b>Warum gerade hier so viel Potenzial steckt:</b> Neuro-Messung hat historisch mit sehr schlechtem Signal-Rausch-Verhältnis gearbeitet und deshalb aggressiv gefiltert und gemittelt. Zwei Entwicklungen kehren das um — <span class="hl">kontinuierliche Alltagsmessung</span> (statt kurzer Laborsitzungen) liefert genug Daten, um im „Rauschen“ nach Struktur zu suchen, und <span class="hl">Modelle für hochdimensionale Zeitreihen</span> können sie finden. Überall dort, wo bisher „vorverarbeitet und verworfen“ wurde, liegt jetzt die produktivste Frage: Was steckt im Weggeworfenen?</p>
+    </div>
+  </details>
+
+  <!-- 9 -->
+  <details class="branch deep" open>
+    <summary>
+      <div class="idx">09</div>
+      <div class="btitle">
+        <h2>Verknüpfung zu Longevity</h2>
+        <div class="sub">Rauschen als Alterungsmaß — die „aging clocks“</div>
+      </div>
+      <div class="pos"><i style="left:46%;background:#a8b483"></i></div>
+      <div class="chev">▸</div>
+    </summary>
+    <div class="body">
+      <p class="intro">Hier schließt sich der Kreis auf überraschende Weise: In der Alternsforschung ist der <i>Verlust von Ordnung</i> — also die Zunahme von Rauschen und Unregelmäßigkeit — selbst zum Messgegenstand geworden. Altern lässt sich als schleichende Verrauschung biologischer Signale fassen, und genau deren Vermessung ist die Brücke von Ast 08 zur Longevity-Ökonomie.</p>
+      <div class="fields">
+        <div class="field hot">
+          <h4>EEG-basierte „brain clocks“ <span class="tag c">konkret</span></h4>
+          <p class="how">Aus hochdimensionalen EEG-Merkmalen — inklusive des früheren „Rausch“-Anteils — sagen ML-Modelle das biologische Hirnalter vorher; nicht-invasiv, wiederholbar, für die Messung zuhause geeignet.</p>
+          <div class="sig"><span class="flame">▲</span><span><b>Signal:</b> das aperiodische Rauschen aus Ast 08 wird hier zur Zielgröße einer Uhr.</span></div>
+        </div>
+        <div class="field hot">
+          <h4>Verrauschung als Alterns-Signatur <span class="tag e">episteme</span></h4>
+          <p class="how">Ansteigende aperiodische Steilheit, sinkende Komplexität von Herzschlag und neuronaler Dynamik: Altern zeigt sich als Übergang von geordnetem Signal zu Rauschen. Der Rausch-<i>zuwachs</i> ist die Messgröße.</p>
+          <div class="sig"><span class="flame">▲</span><span><b>Signal:</b> ein bislang wenig genutzter, aber theoretisch sehr sauberer Longevity-Marker.</span></div>
+        </div>
+        <div class="field hot">
+          <h4>Intervention-Readout <span class="tag c">konkret</span></h4>
+          <p class="how">Weil solche Uhren billig und wiederholbar sind, taugen sie als Wirkungsmaß: Verändert eine Intervention das gemessene Alter? Erste Programme berichten messbare „Verjüngung“ dieser Marker.</p>
+          <div class="sig"><span class="flame">▲</span><span><b>Signal:</b> hier entsteht der ökonomische Hebel — ein wiederholbarer Endpunkt ist monetarisierbar.</span></div>
+        </div>
+        <div class="field">
+          <h4>Multimodale Aggregation <span class="tag c">konkret</span></h4>
+          <p class="how">Neuro-Uhren neben molekularen (Methylierung), physiologischen und kognitiven Uhren. Kein Einzelmarker ist zuverlässig — erst die Aggregation vieler verrauschter Uhren stabilisiert das Signal.</p>
+        </div>
+      </div>
+      <p class="synth"><b>Die Verbindung zu deinem roten Faden:</b> Longevity-Uhren sind strukturell dasselbe wie das Kollektiv-Prinzip aus Ast 05, nur über <span class="hl">Messgrößen statt über Menschen</span> aggregiert — viele individuell verrauschte Alterns-Indikatoren mitteln sich zu einer belastbaren Schätzung. Das macht das Feld doppelt anschlussfähig: Es liefert einen wiederholbaren, geräte-erfassten Endpunkt (attraktiv für Produkte), und es ruht auf derselben sauberen Aggregations-Mathematik, die schon die seriöse Version von „das Netzwerk nimmt mehr wahr“ trägt. Die Warngrenze aus Ast 04 gilt hier verschärft: Ein Übermaß an Merkmalen bei wenig Probanden erzeugt leicht Pseudo-Uhren — die methodische Absicherung ist der eigentliche Engpass.</p>
+    </div>
+  </details>
+
+  <div class="closing">
+    <h3>Wozu die Karte dient</h3>
+    <p>Quer durch alle sieben Äste verläuft <b>ein einziges Muster</b>: Ob etwas „Rauschen“ heißt, ist keine Eigenschaft der Daten, sondern eine Funktion des Modells, das gerade misst. Genau an den <span class="q">rot markierten Stellen</span> ist dieses Modell heute im Umbruch — dort lohnt die gezielte Nachfrage, ob ein Messverfahren gerade dabei ist, aus Störfaktor, Datenmüll oder Artefakt ein neues Signal zu gewinnen.</p>
+    <p>Die dichteste Häufung von Signal-Potenzial liegt dort, wo <b>zwei Bedingungen zusammenkommen</b>: gestiegene Rechenleistung/Datenmenge (Äste 02, 04, 05) und ein bereits vorhandener theoretischer Apparat, um im Verworfenen zu suchen (Äste 03, 06). Wo beides zusammenfällt — etwa Fragmentomik, Emergent Sensing, Diffusionsmodelle — ist der Übergang schon im Gange; wo erst eines vorliegt, steht er womöglich bevor.</p>
+    <p>Die beiden Vertiefungs-Äste (08, 09) sind der dichteste Cluster überhaupt: <b>Hirn- und Nerven-Messverfahren</b> haben historisch am aggressivsten gefiltert und gemittelt und tragen deshalb die größte Menge an noch ungehobenem „Rauschen“ in ihren Archiven; <b>Longevity</b> liefert zugleich den Rahmen, in dem dieser Rausch-Zuwachs selbst zur begehrten Messgröße wird. Beide ruhen auf derselben Aggregations-Logik wie Ast 05 — und unterliegen derselben Warngrenze wie Ast 04.</p>
+    <p class="foot">◆ Position der Marker auf jedem Ast = ungefähre Lage zwischen konkretem und epistemologischem Pol · ▲ = Signal-Potenzial</p>
+  </div>
+</div>
+</body>
+</html>

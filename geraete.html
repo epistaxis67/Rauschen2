@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rauschen — Geräte am Menschen</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root{
+    --bg:#0d1b1e;--bg2:#0a1518;--ink:#eaf2f0;--muted:#8aa6a3;--line:#20393b;
+    --concrete:#5ec6c0;--episteme:#e0a458;--hot:#f06d6d;
+    --card:#122528;--card2:#0f2023;
+    --a1:#5ec6c0;--a2:#7ab8a0;--a3:#c9a86a;--a4:#e0a458;--a5:#d98b6a;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:
+      radial-gradient(1200px 700px at 15% -10%, #14313033 0, transparent 60%),
+      radial-gradient(1000px 600px at 90% 0%, #2a1e0e40 0, transparent 55%),
+      var(--bg);
+    color:var(--ink);font-family:'Space Grotesk',system-ui,sans-serif;
+    line-height:1.5;-webkit-font-smoothing:antialiased;padding:48px 32px 96px;
+  }
+  .wrap{max-width:1080px;margin:0 auto}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.28em;
+    text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+  h1{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(34px,5.5vw,62px);
+    line-height:1;letter-spacing:-.02em;margin:0 0 12px}
+  h1 .n{font-style:italic;font-weight:400}
+  .lede{max-width:700px;color:#c3d6d3;font-size:16.5px}
+  .lede b{color:var(--ink);font-weight:600}
+
+  h2.step{font-family:'Fraunces',serif;font-weight:600;font-size:26px;margin:0 0 4px;letter-spacing:-.01em}
+  .step-wrap{margin:44px 0 8px;display:flex;align-items:baseline;gap:14px}
+  .step-wrap .k{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--hot)}
+  .step-sub{color:var(--muted);font-size:14px;margin:0 0 24px;max-width:720px}
+
+  /* STEP 1: access tiers */
+  .tier{border:1px solid var(--line);border-radius:14px;margin-bottom:14px;overflow:hidden;
+    background:linear-gradient(180deg,var(--card),var(--card2))}
+  .tier-head{padding:14px 18px;display:flex;align-items:center;gap:14px;border-bottom:1px solid #ffffff0c}
+  .tier-head .band{width:10px;height:34px;border-radius:4px;flex:0 0 auto}
+  .tier-head h3{margin:0;font-size:17px;font-family:'Fraunces',serif;font-weight:600}
+  .tier-head .meta{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:11px;
+    color:var(--muted);text-align:right;line-height:1.4}
+  .devs{padding:14px 18px;display:flex;flex-wrap:wrap;gap:8px}
+  .dev{border:1px solid #ffffff14;border-radius:9px;padding:7px 11px;font-size:13px;background:#0e2023}
+  .dev b{color:var(--ink);font-weight:600}
+  .dev span{color:var(--muted)}
+
+  /* STEP 2: data table */
+  .tbl{border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:10px}
+  .trow{display:grid;grid-template-columns:150px 1fr 1fr;gap:0;border-bottom:1px solid #ffffff0c}
+  .trow:last-child{border-bottom:none}
+  .trow > div{padding:12px 15px}
+  .trow.h > div{background:#0e2226;font-family:'JetBrains Mono',monospace;font-size:10.5px;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .tk{font-weight:600;font-size:13.5px;border-right:1px solid #ffffff0a}
+  .tk .cat{display:block;font-family:'JetBrains Mono',monospace;font-size:9.5px;
+    letter-spacing:.08em;text-transform:uppercase;color:var(--concrete);font-weight:400;margin-top:3px}
+  .tprim{font-size:13px;color:#cfe0dd;border-right:1px solid #ffffff0a}
+  .tnoise{font-size:13px;color:#e9b3a8}
+  .tnoise b{color:var(--hot);font-weight:600}
+  @media(max-width:680px){.trow{grid-template-columns:1fr}.tk,.tprim{border-right:none;border-bottom:1px solid #ffffff0a}}
+
+  /* STEP 3: opportunity cards */
+  .opp{border:1px solid var(--line);border-radius:16px;margin-bottom:16px;overflow:hidden;
+    background:linear-gradient(180deg,var(--card),var(--card2))}
+  .opp.top{border-color:#f06d6d55;box-shadow:0 0 0 1px #f06d6d18, 0 12px 44px -22px #f06d6d44}
+  .opp-head{padding:18px 20px 14px;display:flex;gap:15px;align-items:flex-start;border-bottom:1px solid #ffffff0c}
+  .opp-head .rank{font-family:'Fraunces',serif;font-weight:900;font-size:24px;line-height:1;opacity:.3;min-width:30px}
+  .opp.top .opp-head .rank{opacity:.55;color:var(--hot)}
+  .opp-head h3{margin:0 0 3px;font-family:'Fraunces',serif;font-weight:600;font-size:20px}
+  .opp-head .tags{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted);letter-spacing:.04em}
+  .opp-rows{padding:6px 20px 18px}
+  .orow{display:grid;grid-template-columns:118px 1fr;gap:14px;padding:11px 0;border-bottom:1px dashed #ffffff10}
+  .orow:last-child{border-bottom:none}
+  .ol{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:2px}
+  .ol.win{color:#7fc8a4}.ol.risk{color:#e8b06a}
+  .ob{font-size:13.5px;color:#cfe0dd;line-height:1.55}
+  .ob b{color:var(--ink);font-weight:600}
+  @media(max-width:600px){.orow{grid-template-columns:1fr;gap:3px}}
+
+  .note{margin:20px 0 0;padding:15px 17px;border-radius:12px;border:1px solid #2c4a44;
+    background:#0e2226;font-size:13.5px;color:#b9ccc9}
+  .note b{color:var(--ink)}
+
+  .closing{margin-top:40px;border:1px solid var(--line);border-radius:16px;padding:24px 26px;
+    background:linear-gradient(135deg,#12282b,#171f1c)}
+  .closing h3{font-family:'Fraunces',serif;font-weight:600;font-size:20px;margin:0 0 12px}
+  .closing p{color:#c3d6d3;font-size:14px;margin:0 0 10px;max-width:840px}
+  .closing .q{color:var(--hot);font-weight:600}
+  .foot{margin-top:20px;color:var(--muted);font-size:11.5px;font-family:'JetBrains Mono',monospace;line-height:1.6}
+</style>
+
+<style id="shared-nav-css">
+  .topnav{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);
+    background:#0b171acc;border-bottom:1px solid #20393b;margin:-48px -32px 34px}
+  .topnav .inner{max-width:1100px;margin:0 auto;padding:12px 32px;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+  .topnav .brand{font-family:'Fraunces',serif;font-weight:900;font-size:16px;letter-spacing:-.01em;margin-right:4px;color:#eaf2f0;text-decoration:none}
+  .topnav .brand .n{font-style:italic;font-weight:400}
+  .topnav a.navlink{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.04em;
+    color:#8aa6a3;text-decoration:none;padding:4px 0;border-bottom:2px solid transparent;transition:.15s}
+  .topnav a.navlink:hover{color:#eaf2f0}
+  .topnav a.navlink.active{color:#eaf2f0;border-bottom-color:#f06d6d}
+  @media(max-width:820px){.topnav .inner{gap:13px}.topnav .brand{width:100%}}
+</style>
+
+</head>
+<body>
+<nav class="topnav"><div class="inner"><a class="brand" href="index.html">Das <span class="n">Rauschen</span></a><a class="navlink" href="index.html">Manifest</a><a class="navlink" href="mindmap.html">Systematik</a><a class="navlink active" href="geraete.html">Ger&auml;te</a><a class="navlink" href="versuche.html">Versuche</a><a class="navlink" href="kontakte.html">Kontakte&nbsp;DE</a><a class="navlink" href="international.html">International</a><a class="navlink" href="fragen.html">Fragen</a><a class="navlink" href="medien.html">Literatur</a></div></nav>
+<div class="wrap">
+  <div class="eyebrow">Begleitblatt zur Mindmap · Geräte am Menschen</div>
+  <h1>Was misst uns — und was <span class="n">filtert es weg</span></h1>
+  <p class="lede">Von der praktischen Ebene her gedacht: welche Geräte heute Daten über den Menschen sammeln, wie zugänglich sie sind, was sie erfassen — und wo im <b>Weggefilterten</b> das größte Potenzial liegt, aus bisherigem Rauschen ein Signal zu machen. Drei Schritte, anschließend der Bezug zur Mindmap.</p>
+
+  <!-- ============ STEP 1 ============ -->
+  <div class="step-wrap"><span class="k">Schritt 1</span><h2 class="step">Die Geräte — nach Zugänglichkeit</h2></div>
+  <p class="step-sub">Sortiert von „hat fast jeder“ bis „Speziallabor“. Preis und Verbreitung bestimmen, wie leicht sich große, alltagsnahe Datenmengen gewinnen lassen — die Grundvoraussetzung, um überhaupt im Rauschen nach Struktur zu suchen.</p>
+
+  <div class="tier">
+    <div class="tier-head"><span class="band" style="background:var(--a1)"></span>
+      <h3>Allgegenwärtig · schon vorhanden</h3>
+      <div class="meta">≈ jede Person<br>0 € Zusatzkosten</div></div>
+    <div class="devs">
+      <div class="dev"><b>Smartphone</b> <span>— Kamera, Mikrofon, IMU, GPS, Touch, Tippdynamik</span></div>
+      <div class="dev"><b>Smartwatch / Fitness-Band</b> <span>— Apple, Garmin, Fitbit, Samsung</span></div>
+      <div class="dev"><b>Kopfhörer / Earbuds</b> <span>— Bewegung, teils Ohr-PPG</span></div>
+    </div>
+  </div>
+
+  <div class="tier">
+    <div class="tier-head"><span class="band" style="background:var(--a2)"></span>
+      <h3>Consumer-Wellness · erschwinglich</h3>
+      <div class="meta">≈ 50–400 €<br>+ teils Abo</div></div>
+    <div class="devs">
+      <div class="dev"><b>Smart Ring</b> <span>— Oura, Samsung; PPG, Temp, Bewegung</span></div>
+      <div class="dev"><b>Recovery-Band</b> <span>— Whoop (Abo)</span></div>
+      <div class="dev"><b>Smart-Waage / BP-Manschette</b> <span>— Withings u.a.</span></div>
+      <div class="dev"><b>OTC-CGM</b> <span>— Glukose, rezeptfrei (Libre, Dexcom Stelo)</span></div>
+      <div class="dev"><b>Consumer-EEG</b> <span>— Muse, Emotiv; Stirn-/Ohr-Elektroden</span></div>
+      <div class="dev"><b>Smart-Home</b> <span>— Schlafmatte, Kamera, Sprachassistent</span></div>
+    </div>
+  </div>
+
+  <div class="tier">
+    <div class="tier-head"><span class="band" style="background:var(--a3)"></span>
+      <h3>Prosumer / Semipro · gehoben</h3>
+      <div class="meta">≈ 500–5.000 €</div></div>
+    <div class="devs">
+      <div class="dev"><b>Mehrkanal-EEG-Headset</b> <span>— trocken, mobil</span></div>
+      <div class="dev"><b>fNIRS-Stirnband</b> <span>— Hirndurchblutung</span></div>
+      <div class="dev"><b>Chest-Strap / Medical-Patch</b> <span>— EKG, EMG, Atmung</span></div>
+      <div class="dev"><b>mmWave-/Radar-Sensor</b> <span>— kontaktlose Vitalzeichen</span></div>
+      <div class="dev"><b>Eye-Tracker</b> <span>— Blick, Pupille, Mikrosakkaden</span></div>
+    </div>
+  </div>
+
+  <div class="tier">
+    <div class="tier-head"><span class="band" style="background:var(--a4)"></span>
+      <h3>Klinisch / Forschung · Labor</h3>
+      <div class="meta">≫ 10.000 €<br>Einrichtung nötig</div></div>
+    <div class="devs">
+      <div class="dev"><b>Klinisches EEG / MEG · OPM-MEG</b></div>
+      <div class="dev"><b>fMRT / PET</b></div>
+      <div class="dev"><b>Polysomnographie</b> <span>— Schlaflabor</span></div>
+      <div class="dev"><b>Labor-Omics</b> <span>— Blut, Methylierung, Mikrobiom</span></div>
+    </div>
+  </div>
+
+  <!-- ============ STEP 2 ============ -->
+  <div class="step-wrap"><span class="k">Schritt 2</span><h2 class="step">Was sie erfassen — Nutzsignal & Nebenkanal</h2></div>
+  <p class="step-sub">Links das, was das Gerät als Produkt verkauft. Rechts der Neben- und „Rausch“-Anteil: Roh- und Störsignale, die intern meist gefiltert, gemittelt oder verworfen werden — und die genau deshalb das ungehobene Material sind.</p>
+
+  <div class="tbl">
+    <div class="trow h"><div>Gerät</div><div>Primäres Nutzsignal</div><div>Neben-/„Rausch“-Kanal (meist verworfen)</div></div>
+    <div class="trow">
+      <div class="tk">Smartwatch / Ring<span class="cat">Herz & Bewegung</span></div>
+      <div class="tprim">Herzfrequenz, HRV, Schritte, Schlafphasen, SpO₂, Hauttemperatur</div>
+      <div class="tnoise"><b>Roh-PPG-Wellenform</b> (Pulsform, nicht nur der Takt), <b>Rohbeschleunigung</b> in 3 Achsen, Mikro-Zittern, Signalqualitäts-„Aussetzer“</div>
+    </div>
+    <div class="trow">
+      <div class="tk">Smartphone<span class="cat">Verhalten</span></div>
+      <div class="tprim">Standort, Schritte, App-Nutzung, Anruf-/Nachrichtentakt</div>
+      <div class="tnoise"><b>Tipp- & Wischdynamik</b>, Tremor über die Kamera/IMU, Stimmmikro-Variation, nächtliche Bewegungsmuster</div>
+    </div>
+    <div class="trow">
+      <div class="tk">Mikrofon / Voice<span class="cat">Sprache</span></div>
+      <div class="tprim">Sprachbefehle, Diktat, Anrufe</div>
+      <div class="tnoise"><b>Prosodie, Jitter, Shimmer, Pausenstruktur</b> — paralinguistische Merkmale, die für die Transkription irrelevant sind</div>
+    </div>
+    <div class="trow">
+      <div class="tk">Consumer-EEG / fNIRS<span class="cat">Gehirn</span></div>
+      <div class="tprim">„Fokus“-/„Ruhe“-Scores, Neurofeedback, Meditationsmetriken</div>
+      <div class="tnoise"><b>Aperiodischer 1/f-Anteil</b>, Artefakte durch Puls/Atmung/Bewegung, Übergangszustände zwischen Wach und Schlaf</div>
+    </div>
+    <div class="trow">
+      <div class="tk">CGM (Glukose)<span class="cat">Stoffwechsel</span></div>
+      <div class="tprim">Glukose-Trendkurve, Alarme, Zeit-im-Zielbereich</div>
+      <div class="tnoise"><b>Kurzzeit-Variabilität & Kurvenform</b> um Mahlzeiten/Stress, Rausch-Textur des Sensors, nächtliche Mikro-Schwankungen</div>
+    </div>
+    <div class="trow">
+      <div class="tk">Radar / Kamera<span class="cat">kontaktlos</span></div>
+      <div class="tprim">Anwesenheit, Atem-/Herzfrequenz, Sturzerkennung</div>
+      <div class="tnoise"><b>Feinbewegung, Unruhe, Gang-Mikrovariation</b>, rPPG-Farbschwankung der Haut, Umgebungs-„Clutter“</div>
+    </div>
+    <div class="trow">
+      <div class="tk">Eye-Tracker<span class="cat">Blick</span></div>
+      <div class="tprim">Blickpunkt, Verweildauer, Sakkaden</div>
+      <div class="tnoise"><b>Mikrosakkaden, Pupillen-Mikrooszillation, Lidschlag-Rhythmus</b> — klassisch als Messrauschen behandelt</div>
+    </div>
+  </div>
+
+  <div class="note"><b>Der entscheidende Flaschenhals:</b> Kein großer Hersteller gibt die <i>kontinuierlichen Rohsignale</i> frei (PPG, Beschleunigung, Temperatur) — exportierbar sind fast nur die aufbereiteten Endwerte und gelegentlich kurze EKG-Schnipsel. Das heißt: Der „Rausch“-Nebenkanal, in dem das ungehobene Signal steckt, wird schon im Gerät verworfen. Wer an ihn herankommt (eigene Erfassung, offene Hardware, Forschungs-APIs), hat Zugang zu Material, das den meisten verschlossen ist — das ist selbst schon ein Teil der Chance.</div>
+
+  <!-- ============ STEP 3 ============ -->
+  <div class="step-wrap"><span class="k">Schritt 3</span><h2 class="step">Wo das größte Potenzial liegt</h2></div>
+  <p class="step-sub">Neue Versuchsanordnungen, geordnet nach Potenzial, aus bisherigem Rauschen ein Signal zu machen. Kriterium: (a) das Rohmaterial ist zugänglich oder erschließbar, (b) es wird bisher verworfen, (c) es gibt eine plausible reale Größe dahinter.</p>
+
+  <div class="opp top">
+    <div class="opp-head"><div class="rank">01</div><div>
+      <h3>Rohsignal-Fusion über viele Alltagsgeräte</h3>
+      <div class="tags">Mindmap-Ast 03 · 05 · 08 — Aggregation + neuronales/physiolog. Rauschen</div>
+    </div></div>
+    <div class="opp-rows">
+      <div class="orow"><div class="ol">Idee</div><div class="ob">Statt der aufbereiteten Scores die <b>rohen Nebenkanäle</b> vieler billiger Geräte einer Person zusammenführen (PPG-Wellenform + Beschleunigung + Tippdynamik + Stimme + ggf. CGM) und über die Zeit koppeln.</div></div>
+      <div class="orow"><div class="ol win">Warum stark</div><div class="ob">Kombiniert zwei Hebel der Mindmap: <b>Aggregation verrauschter Quellen</b> (√N-Prinzip) und <b>Nebenkanäle, die einzeln als Rauschen gelten</b>. Das Rohmaterial ist bei genügend Willen zugänglich; kaum jemand wertet es kombiniert aus.</div></div>
+      <div class="orow"><div class="ol">Mögliches Signal</div><div class="ob">Zustands-/Belastungsindex, frühe Abweichung von der persönlichen Norm, Kopplung Gehirn–Körper–Verhalten.</div></div>
+      <div class="orow"><div class="ol risk">Achtung</div><div class="ob">Datenzugang (Rohsignale sind gesperrt) und Scheinkorrelationen bei vielen Kanälen × wenig Personen. Ohne die Prüf-Instanz (QUEST, Ast 04) entstehen leicht Pseudosignale.</div></div>
+    </div>
+  </div>
+
+  <div class="opp top">
+    <div class="opp-head"><div class="rank">02</div><div>
+      <h3>Der aperiodische EEG-/fNIRS-Anteil als Zielgröße</h3>
+      <div class="tags">Mindmap-Ast 08 · 09 — Neuro-Messung + Longevity</div>
+    </div></div>
+    <div class="opp-rows">
+      <div class="orow"><div class="ol">Idee</div><div class="ob">Consumer-EEG/fNIRS nicht auf den „Fokus-Score“ reduzieren, sondern gezielt den <b>1/f-Untergrund</b> erfassen — das, was die Geräte als Grundrauschen wegrechnen — und longitudinal verfolgen.</div></div>
+      <div class="orow"><div class="ol win">Warum stark</div><div class="ob">Der reifste Fall der ganzen Mindmap: Das ehemalige Rauschen ist bereits als Alters-/Zustandsmarker belegt. Hardware ist erschwinglich, Messung zuhause wiederholbar.</div></div>
+      <div class="orow"><div class="ol">Mögliches Signal</div><div class="ob">Wiederholbarer Hirn-„Zustand“-/Alterns-Readout; Wirkungsmaß für Interventionen.</div></div>
+      <div class="orow"><div class="ol risk">Achtung</div><div class="ob">Consumer-EEG ist artefaktanfällig; die klinisch belegten Effekte sind klein. „Verjüngungs“-Deutung geht über die Evidenz hinaus (siehe Kontakt Antonenko/Fleischmann).</div></div>
+    </div>
+  </div>
+
+  <div class="opp">
+    <div class="opp-head"><div class="rank">03</div><div>
+      <h3>Paralinguistik aus dem Mikrofon</h3>
+      <div class="tags">Mindmap-Ast 08 — erweiterte Nerven-/Zustandsmessung</div>
+    </div></div>
+    <div class="opp-rows">
+      <div class="orow"><div class="ol">Idee</div><div class="ob">Nicht <i>was</i> gesagt wird, sondern das <b>Wie</b> — Jitter, Shimmer, Prosodie, Pausen — aus ohnehin anfallenden Sprachdaten als Zustands-/Gesundheitssignal lesen.</div></div>
+      <div class="orow"><div class="ol win">Warum stark</div><div class="ob">Mikrofone sind überall; die paralinguistische Spur wird für die Transkription weggeworfen. Sehr niedrige Hardware-Schwelle.</div></div>
+      <div class="orow"><div class="ol">Mögliches Signal</div><div class="ob">Marker für Müdigkeit, Stimmung, Atemwege, teils neurolog. Veränderungen.</div></div>
+      <div class="orow"><div class="ol risk">Achtung</div><div class="ob">Stark <b>privatsphäre-sensibel</b> (Stimme = identifizierbar, Inhalt = intim). Einwilligung und lokale Verarbeitung sind hier keine Kür, sondern Bedingung.</div></div>
+    </div>
+  </div>
+
+  <div class="opp">
+    <div class="opp-head"><div class="rank">04</div><div>
+      <h3>Kontaktlose Feinbewegung (Radar / rPPG)</h3>
+      <div class="tags">Mindmap-Ast 07 · 08 — Umwelt-Sensing + Peripherie</div>
+    </div></div>
+    <div class="opp-rows">
+      <div class="orow"><div class="ol">Idee</div><div class="ob">Aus dem, was Radar-/Kamera-Sensoren als <b>Umgebungs-„Clutter“ und Feinunruhe</b> verwerfen, Gang-Mikrovariation, nächtliche Unruhe oder Hautfarb-Puls (rPPG) auslesen.</div></div>
+      <div class="orow"><div class="ol win">Warum stark</div><div class="ob">Völlig kontaktlos, alltagstauglich, Sensoren werden billiger. Das Verworfene ist hier besonders groß.</div></div>
+      <div class="orow"><div class="ol">Mögliches Signal</div><div class="ob">Frühindikatoren (Gang, Unruhe) für neurolog. oder kardiale Veränderung; Schlaf-Feinstruktur.</div></div>
+      <div class="orow"><div class="ol risk">Achtung</div><div class="ob">Passive Erfassung ohne aktives Zutun der Person wirft <b>Consent-Fragen</b> auf; Reife und Validierung noch gering.</div></div>
+    </div>
+  </div>
+
+  <div class="opp">
+    <div class="opp-head"><div class="rank">05</div><div>
+      <h3>CGM-Feinstruktur jenseits des Trends</h3>
+      <div class="tags">Mindmap-Ast 02 · 08 — physiolog. Fluktuation</div>
+    </div></div>
+    <div class="opp-rows">
+      <div class="orow"><div class="ol">Idee</div><div class="ob">Nicht die Glukose-Trendkurve, sondern die <b>Kurzzeit-Variabilität und Kurvenform</b> — die „Textur“ um Mahlzeiten, Stress und Schlaf — als eigenständiges Signal.</div></div>
+      <div class="orow"><div class="ol win">Warum stark</div><div class="ob">OTC-CGM ist neu erschwinglich und in der Tech-/Longevity-Szene bereits populär; die Feinstruktur wird bisher kaum genutzt.</div></div>
+      <div class="orow"><div class="ol">Mögliches Signal</div><div class="ob">Metabolische Flexibilität, Stress-Reaktivität, individuelle Nahrungsantwort.</div></div>
+      <div class="orow"><div class="ol risk">Achtung</div><div class="ob">Sensor-Eigenrauschen und Trend leicht verwechselbar; Kausalität schwer. Gefahr der Über-Interpretation von Alltagsschwankungen.</div></div>
+    </div>
+  </div>
+
+  <!-- ============ CLOSING ============ -->
+  <div class="closing">
+    <h3>Bezug zur Mindmap — und das durchgehende Muster</h3>
+    <p>Alle fünf Anordnungen sind Varianten <b>eines</b> Zugs: das nehmen, was ein Gerät als Nebenprodukt, Artefakt oder Grundrauschen verwirft, und fragen, ob darin eine reale Größe steckt. Genau die rot markierten Stellen der Mindmap (Äste 02, 05, 08, 09) treffen sich hier auf der praktischen Ebene der Geräte.</p>
+    <p>Zwei Bedingungen entscheiden über den Erfolg, und beide stehen schon in der Mindmap: <b>Zugang zum Rohmaterial</b> (der Flaschenhals aus Schritt 2 — die Rohsignale sind gesperrt) und die <b>Prüfung gegen Pseudosignale</b> (Ast 04). <span class="q">Die eigentliche Knappheit ist nicht das Rauschen — davon gibt es überall reichlich —, sondern der Zugang zum ungefilterten Signal und der ehrliche Test, ob es echt ist.</span></p>
+    <p class="foot">Gerätekategorien & Zugänglichkeit: Marktstand Mitte 2026, exemplarisch, nicht erschöpfend · konkrete Modelle/Preise ändern sich schnell · Roh-Datenzugang je nach Hersteller und Region unterschiedlich geregelt · Ast-Nummern verweisen auf die Datei „Systematik“.</p>
+  </div>
+</div>
+</body>
+</html>

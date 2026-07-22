@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rauschen — Fragenkatalog</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+  :root{
+    --bg:#0d1b1e;--bg2:#0a1518;--ink:#eaf2f0;--muted:#8aa6a3;--line:#20393b;
+    --concrete:#5ec6c0;--episteme:#e0a458;--hot:#f06d6d;--gold:#e8c874;
+    --card:#122528;--card2:#0f2023;
+    --st1:#5ec6c0;--st2:#8fb8d0;--st3:#c9b06a;--st4:#e0955c;--st5:#e8c874;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:
+      radial-gradient(1200px 700px at 15% -10%, #14313033 0, transparent 60%),
+      radial-gradient(1000px 600px at 90% 0%, #2a1e0e40 0, transparent 55%),
+      var(--bg);
+    color:var(--ink);font-family:'Space Grotesk',system-ui,sans-serif;
+    line-height:1.5;-webkit-font-smoothing:antialiased;padding:48px 32px 96px;
+  }
+  .topnav{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);
+    background:#0b171acc;border-bottom:1px solid #20393b;margin:-48px -32px 34px}
+  .topnav .inner{max-width:1100px;margin:0 auto;padding:12px 32px;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+  .topnav .brand{font-family:'Fraunces',serif;font-weight:900;font-size:16px;letter-spacing:-.01em;margin-right:4px;color:#eaf2f0;text-decoration:none}
+  .topnav .brand .n{font-style:italic;font-weight:400}
+  .topnav a.navlink{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.04em;
+    color:#8aa6a3;text-decoration:none;padding:4px 0;border-bottom:2px solid transparent;transition:.15s}
+  .topnav a.navlink:hover{color:#eaf2f0}
+  .topnav a.navlink.active{color:#eaf2f0;border-bottom-color:#f06d6d}
+  @media(max-width:820px){.topnav .inner{gap:13px}.topnav .brand{width:100%}}
+
+  .wrap{max-width:1000px;margin:0 auto}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.28em;
+    text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+  h1{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(34px,5.5vw,60px);
+    line-height:1;letter-spacing:-.02em;margin:0 0 12px}
+  h1 .n{font-style:italic;font-weight:400}
+  .lede{max-width:720px;color:#c3d6d3;font-size:16.5px}
+  .lede b{color:var(--ink);font-weight:600}
+
+  .note{margin:24px 0 8px;padding:16px 18px;border-radius:12px;border:1px solid #2c4a44;
+    background:#0e2226;font-size:13.5px;color:#b9ccc9}
+  .note b{color:var(--ink)}
+
+  /* progression bar */
+  .prog{margin:30px 0 34px;border:1px solid var(--line);border-radius:14px;padding:18px 20px;
+    background:linear-gradient(180deg,var(--card),var(--card2))}
+  .prog h3{margin:0 0 14px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+  .progbar{height:10px;border-radius:6px;margin-bottom:10px;
+    background:linear-gradient(90deg,var(--st1),var(--st2) 28%,var(--st3) 52%,var(--st4) 76%,var(--st5))}
+  .prog-lbls{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace;gap:6px}
+  .prog-lbls b{color:#cfe0dd;font-weight:500;display:block}
+
+  /* stage blocks */
+  .stage{border:1px solid var(--line);border-radius:16px;margin-bottom:18px;overflow:hidden;
+    background:linear-gradient(180deg,var(--card),var(--card2))}
+  .stage.gold{border-color:#e8c87455;box-shadow:0 0 0 1px #e8c87418, 0 12px 44px -24px #e8c87444}
+  .stage-head{padding:18px 22px 15px;display:flex;gap:16px;align-items:flex-start;border-bottom:1px solid #ffffff0c}
+  .stage-head .rail{width:5px;align-self:stretch;border-radius:4px;margin:-18px 0 -15px;flex:0 0 auto}
+  .stage-head .st{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+  .stage-head h2{margin:0 0 4px;font-family:'Fraunces',serif;font-weight:600;font-size:22px;letter-spacing:-.01em}
+  .stage-head .goal{color:var(--muted);font-size:13.5px}
+  .stage-head .goal b{color:#cfe0dd;font-weight:500}
+  .stage-head .num{margin-left:auto;font-family:'Fraunces',serif;font-weight:900;font-size:30px;opacity:.22;line-height:1}
+  .stage.gold .stage-head .num{opacity:.5;color:var(--gold)}
+
+  .qs{padding:14px 22px 20px}
+  .q{padding:11px 0;border-bottom:1px dashed #ffffff10;display:flex;gap:13px}
+  .q:last-child{border-bottom:none}
+  .q .qi{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);padding-top:3px;flex:0 0 auto;min-width:20px}
+  .q .qt{font-size:14.5px;color:#dfeae8;line-height:1.55}
+  .q .qt b{color:var(--ink);font-weight:600}
+  .q .qt .why{display:block;margin-top:3px;font-size:12.5px;color:var(--muted);font-style:italic}
+
+  .tailor{padding:2px 22px 20px}
+  .tailor .th{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--episteme);margin:10px 0 10px}
+  .tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+  .trow{border:1px solid #ffffff12;border-radius:10px;padding:11px 13px;background:#0e2023}
+  .trow .who{font-size:12.5px;font-weight:600;color:#cfe0dd;margin-bottom:4px}
+  .trow .who span{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--concrete);font-weight:400;letter-spacing:.04em}
+  .trow .qx{font-size:13px;color:var(--muted);line-height:1.5}
+
+  .sec-label{display:flex;align-items:center;gap:16px;margin:40px 2px 22px}
+  .sec-label .line{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent)}
+  .sec-label .txt{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+
+  .closing{margin-top:40px;border:1px solid var(--line);border-radius:16px;padding:24px 26px;background:linear-gradient(135deg,#12282b,#171f1c)}
+  .closing h3{font-family:'Fraunces',serif;font-weight:600;font-size:20px;margin:0 0 12px}
+  .closing p{color:#c3d6d3;font-size:14px;margin:0 0 10px;max-width:840px}
+  .closing .q2{color:var(--gold);font-weight:600}
+  .foot{margin-top:20px;color:var(--muted);font-size:11.5px;font-family:'JetBrains Mono',monospace;line-height:1.6}
+</style>
+</head>
+<body>
+<nav class="topnav"><div class="inner"><a class="brand" href="index.html">Das <span class="n">Rauschen</span></a><a class="navlink" href="index.html">Manifest</a><a class="navlink" href="mindmap.html">Systematik</a><a class="navlink" href="geraete.html">Ger&auml;te</a><a class="navlink" href="versuche.html">Versuche</a><a class="navlink" href="kontakte.html">Kontakte&nbsp;DE</a><a class="navlink" href="international.html">International</a><a class="navlink active" href="fragen.html">Fragen</a><a class="navlink" href="medien.html">Literatur</a></div></nav>
+
+<div class="wrap">
+  <div class="eyebrow">Begleitblatt zur Mindmap · Gesprächsleitfaden</div>
+  <h1>Vom Gespräch zur <span class="n">Gold-Suche</span></h1>
+  <p class="lede">Ein Fragenkatalog für die Gespräche mit den Expert:innen aus den beiden Kontakt-Karten. Er ist als <b>Dramaturgie</b> gebaut: von allgemeinem Interesse am Rauschen über deren eigenes Forschungsfeld hin zur gemeinsamen Suche nach den Gold-Nuggets. Ziel ist nicht, die Fachleute auszufragen, sondern sie zu <b>Mitsuchenden</b> zu machen.</p>
+
+  <div class="note"><b>Grundhaltung:</b> Jede Stufe baut Vertrauen und gemeinsames Vokabular auf, bevor die nächste mehr verlangt. Wer mit Stufe 5 beginnt („wo liegt das verwertbare Signal?“), erntet Abwehr. Wer sich von Stufe 1 heranarbeitet, hat den Experten bis dahin zum Komplizen der Frage gemacht. Die <i>Warum</i>-Zeilen erklären, was die jeweilige Frage im Gespräch leistet.</p>
+
+  <div class="prog">
+    <h3>Die Dramaturgie des Gesprächs</h3>
+    <div class="progbar"></div>
+    <div class="prog-lbls">
+      <span><b>1 · Phänomen</b>gemeinsamer Boden</span>
+      <span><b>2 · Ihr Feld</b>echtes Interesse</span>
+      <span><b>3 · Grenze</b>was gilt als Rauschen?</span>
+      <span><b>4 · Umschlag</b>wann wird es Signal?</span>
+      <span><b>5 · Gold</b>gemeinsame Suche</span>
+    </div>
+  </div>
+
+  <!-- STAGE 1 -->
+  <div class="stage">
+    <div class="stage-head"><div class="rail" style="background:var(--st1)"></div><div>
+      <div class="st">Stufe 1 · Einstieg</div>
+      <h2>Das Phänomen — gemeinsamer Boden</h2>
+      <div class="goal">Ziel: <b>ein geteiltes Verständnis von „Rauschen“</b> herstellen, bevor es fachlich wird. Zeigt Ernsthaftigkeit und öffnet.</div>
+    </div><div class="num">01</div></div>
+    <div class="qs">
+      <div class="q"><div class="qi">1.1</div><div class="qt">Was bedeutet „Rauschen“ in Ihrer täglichen Arbeit ganz konkret — ein Störfaktor, ein Messproblem, oder etwas Interessanteres?<span class="why">Öffnet neutral und lässt den Experten den Begriff selbst definieren.</span></div></div>
+      <div class="q"><div class="qi">1.2</div><div class="qt">Gibt es in Ihrem Feld eine berühmte Geschichte, in der etwas zuerst für <b>Störung gehalten</b> und später zur Entdeckung wurde?<span class="why">Aktiviert die Rauschen-wird-Signal-Figur an einem Beispiel, das der Experte selbst wählt.</span></div></div>
+      <div class="q"><div class="qi">1.3</div><div class="qt">Wo verläuft für Sie die Grenze zwischen einem echten Signal und bloßem Zufall — und wie sicher ist diese Grenze eigentlich?<span class="why">Führt früh die zentrale epistemologische Spannung ein, ohne zu drängen.</span></div></div>
+    </div>
+  </div>
+
+  <!-- STAGE 2 -->
+  <div class="stage">
+    <div class="stage-head"><div class="rail" style="background:var(--st2)"></div><div>
+      <div class="st">Stufe 2 · Ihr Feld</div>
+      <h2>Ihr Forschungsinteresse — echtes Zuhören</h2>
+      <div class="goal">Ziel: dem <b>spezifischen Interesse der Person gerecht werden</b>. Hier wird zugehört, nicht gelenkt. Das ist der Vertrauensanker.</div>
+    </div><div class="num">02</div></div>
+    <div class="qs">
+      <div class="q"><div class="qi">2.1</div><div class="qt">Woran arbeiten Sie gerade, das Sie wirklich umtreibt — und was daran ist noch ungelöst?<span class="why">Reine Einladung. Man erfährt das lebendige Interesse, nicht die Lehrbuchversion.</span></div></div>
+      <div class="q"><div class="qi">2.2</div><div class="qt">Welche Daten fallen bei Ihnen an, die Sie <b>routinemäßig verwerfen oder wegfiltern</b>, weil sie für Ihre eigentliche Frage irrelevant sind?<span class="why">Die Schlüsselfrage der ganzen Stufe — führt sanft zum Nebenkanal, ohne ihn schon zu bewerten.</span></div></div>
+      <div class="q"><div class="qi">2.3</div><div class="qt">Wenn Sie Zeit und Mittel hätten, welcher Aspekt Ihres Feldes verdiente mehr Aufmerksamkeit, als er bekommt?<span class="why">Öffnet den Raum für unterfinanzierte, übersehene Richtungen — oft dort liegt das Gold.</span></div></div>
+    </div>
+  </div>
+
+  <!-- STAGE 3 -->
+  <div class="stage">
+    <div class="stage-head"><div class="rail" style="background:var(--st3)"></div><div>
+      <div class="st">Stufe 3 · Die Grenze</div>
+      <h2>Was gilt bei Ihnen als Rauschen?</h2>
+      <div class="goal">Ziel: die konkrete <b>Grenzziehung sichtbar machen</b> — welches Material fällt auf welche Seite, und warum genau dort?</div>
+    </div><div class="num">03</div></div>
+    <div class="qs">
+      <div class="q"><div class="qi">3.1</div><div class="qt">Nach welchen Kriterien entscheidet sich in Ihrer Methode, was als Signal behandelt und was als Rauschen abgezogen wird — und wer hat diese Kriterien wann festgelegt?<span class="why">Macht bewusst, dass die Grenze eine historische Entscheidung ist, kein Naturgesetz (Kittler-Punkt).</span></div></div>
+      <div class="q"><div class="qi">3.2</div><div class="qt">Gibt es Muster in Ihren „Rausch“-Daten, die Ihnen schon aufgefallen sind, für die es aber bisher <b>keine Erklärung</b> gibt?<span class="why">Zielt direkt auf anomalie-verdächtiges Material — die Vorstufe eines Nuggets.</span></div></div>
+      <div class="q"><div class="qi">3.3</div><div class="qt">Wie viel von dem, was Sie wegfiltern, könnten Sie technisch überhaupt aufbewahren — und tut das jemand?<span class="why">Klärt den praktischen Zugang zum Rohmaterial (der Flaschenhals aus der Geräte-Karte).</span></div></div>
+    </div>
+  </div>
+
+  <!-- STAGE 4 -->
+  <div class="stage">
+    <div class="stage-head"><div class="rail" style="background:var(--st4)"></div><div>
+      <div class="st">Stufe 4 · Der Umschlag</div>
+      <h2>Wann wird Rauschen zu Signal?</h2>
+      <div class="goal">Ziel: gemeinsam die <b>Bedingungen des Umschlags</b> erkunden — was müsste sich ändern, damit das Verworfene lesbar wird?</div>
+    </div><div class="num">04</div></div>
+    <div class="qs">
+      <div class="q"><div class="qi">4.1</div><div class="qt">Was müsste sich ändern — an Messtechnik, Rechenleistung, Theorie — damit ein Teil Ihres heutigen Rauschens morgen zum Signal würde?<span class="why">Lädt den Experten ein, den Umschlag selbst zu imaginieren. Er wird zum Ko-Autor der Hypothese.</span></div></div>
+      <div class="q"><div class="qi">4.2</div><div class="qt">Wenn man Ihr verworfenes Material mit <b>anderen Datenquellen koppeln</b> würde — welche wären das, und was könnte dabei sichtbar werden?<span class="why">Führt die Aggregations-/Fusions-Idee ein, aus der Sicht seines Feldes.</span></div></div>
+      <div class="q"><div class="qi">4.3</div><div class="qt">Wo würden Sie zuerst nach einem Scheinsignal suchen — was wäre die naheliegendste Verwechslung, gegen die man sich absichern müsste?<span class="why">Bindet die Absicherung ein und signalisiert, dass man seriös arbeitet, nicht bloß hofft.</span></div></div>
+    </div>
+  </div>
+
+  <!-- STAGE 5 -->
+  <div class="stage gold">
+    <div class="stage-head"><div class="rail" style="background:var(--st5)"></div><div>
+      <div class="st">Stufe 5 · Die Gold-Suche</div>
+      <h2>Gemeinsam nach den Nuggets suchen</h2>
+      <div class="goal">Ziel: aus dem Gespräch eine <b>gemeinsame Suche</b> machen. Erst hier, mit allem Vorlauf, wird die Verwertungsfrage tragbar.</div>
+    </div><div class="num">05</div></div>
+    <div class="qs">
+      <div class="q"><div class="qi">5.1</div><div class="qt">Wenn Sie wetten müssten: Wo in Ihrem Feld liegt gerade das größte <b>ungehobene Signal im Verworfenen</b> — der Ort, an dem in fünf Jahren jemand sagen wird „das haben wir viel zu lange weggefiltert“?<span class="why">Die Kernfrage. Nach dem Vorlauf beantwortet der Experte sie als geteilte Neugier, nicht als Aushorchung.</span></div></div>
+      <div class="q"><div class="qi">5.2</div><div class="qt">Was bräuchte es konkret, um das zu testen — welche Daten, welcher Aufbau, welche Mitstreiter — und wäre das etwas, das Sie <b>selbst reizen</b> würde?<span class="why">Verwandelt Einsicht in ein mögliches gemeinsames Vorhaben; macht den Experten zum Beteiligten.</span></div></div>
+      <div class="q"><div class="qi">5.3</div><div class="qt">Wenn daraus etwas Belastbares würde — wer außer Ihnen sollte unbedingt mit am Tisch sitzen, gerade auch jemand, der es kritisch prüft?<span class="why">Erweitert das Netzwerk und verankert die Prüf-Instanz als selbstverständlichen Teil, nicht als Bremse.</span></div></div>
+      <div class="q"><div class="qi">5.4</div><div class="qt">Was an dieser ganzen Idee — aus dem Weggeworfenen ein Signal zu machen — halten Sie für <b>überschätzt oder naiv</b>?<span class="why">Die ehrlichste Frage. Lädt Widerspruch ein, schützt vor der Gold-Nugget-Selbsttäuschung und stärkt paradox das Vertrauen.</span></div></div>
+    </div>
+  </div>
+
+  <!-- TAILORING SECTION -->
+  <div class="sec-label"><span class="line"></span><span class="txt">Zuschnitt · Akzente je nach Gesprächspartner</span><span class="line"></span></div>
+  <div class="stage">
+    <div class="stage-head"><div class="rail" style="background:var(--concrete)"></div><div>
+      <div class="st">Anpassung</div>
+      <h2>Wo man den Katalog justiert</h2>
+      <div class="goal">Der Katalog oben passt für alle. Diese Akzente holen das <b>spezifische Interesse</b> einzelner Profile ab — je eine Zusatzfrage, die in Stufe 2–3 eingeschoben wird.</div>
+    </div></div>
+    <div class="tailor">
+      <div class="th">Beispielhafte Akzente (nicht erschöpfend)</div>
+      <div class="tgrid">
+        <div class="trow"><div class="who">Theoretiker des neuronalen Rauschens <span>· stochastische Resonanz</span></div><div class="qx">„Unter welchen Bedingungen <i>hilft</i> Rauschen der Signalübertragung, statt sie zu stören — und ließe sich das gezielt herbeiführen?“</div></div>
+        <div class="trow"><div class="who">Fragmentomik / Biomarker <span>· Datenmüll-Pionier</span></div><div class="qx">„Welche verworfene Fraktion Ihres Materials könnte, wie einst die DNA-Bruchstücke, die nächste Informationsquelle sein?“</div></div>
+        <div class="trow"><div class="who">Kollektiv-/Schwarm-Forschung <span>· emergentes Sensing</span></div><div class="qx">„Was überträgt sich von Ihren Tiergruppen auf menschliche Netzwerke — und wo bricht die Analogie?“</div></div>
+        <div class="trow"><div class="who">Neuro-Messung / EEG-Aging <span>· aperiodischer Anteil</span></div><div class="qx">„Wie belastbar ist der 1/f-Anteil als Marker wirklich — und wo endet Evidenz, wo beginnt Erzählung?“</div></div>
+        <div class="trow"><div class="who">Ökonometrie / Aggregation <span>· Signalextraktion</span></div><div class="qx">„Wie trennt man in hochdimensionalen, verrauschten Daten echtes Signal von Überanpassung — und was ist es ökonomisch wert?“</div></div>
+        <div class="trow"><div class="who">Metascience / Prüf-Instanz <span>· Korrektiv</span></div><div class="qx">„Woran erkennen Sie am schnellsten, dass ein gefeiertes ‚Signal‘ in Wahrheit Rauschen war?“</div></div>
+        <div class="trow"><div class="who">Medien-/Wissenschaftstheorie <span>· Framing</span></div><div class="qx">„Wie hat sich der Begriff ‚Rauschen‘ historisch verschoben — und was verrät das über heutige Grenzziehungen?“</div></div>
+        <div class="trow"><div class="who">Spekulative Ränder <span>· mit Vorsicht</span></div><div class="qx">„Was unterscheidet Ihren Ansatz methodisch von einer nachträglichen Mustersuche im Zufall?“ <i>(prüfend, nicht anbiedernd)</i></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="closing">
+    <h3>Wie dieser Katalog zum Atlas steht</h3>
+    <p>Er ist das Bindeglied zwischen den <b>Kontakt-Karten</b> (wer) und der praktischen Arbeit (<b>Geräte</b>, <b>Versuche</b>). Die fünf Stufen bilden im Kleinen den Weg des ganzen Atlas nach: vom Phänomen (Systematik) über das Konkrete (Geräte/Versuche) zur gemeinsamen Suche. Die Zuschnitt-Zeilen greifen die Profile aus beiden Kontakt-Listen auf.</p>
+    <p>Ein Prinzip trägt den ganzen Leitfaden: <span class="q2">Man findet die Gold-Nuggets nicht, indem man Expert:innen nach ihnen fragt — sondern indem man sie so weit in die Frage hineinzieht, dass die Suche zu ihrer eigenen wird. Und die ehrlichste Frage (5.4) ist die, die einlädt, die ganze Idee zu bezweifeln.</span></p>
+    <p class="foot">Fragen als Startpunkte gedacht, nicht als Checkliste zum Abhaken · Reihenfolge wichtiger als Vollständigkeit · Zuschnitt-Profile verweisen auf „Kontakte&nbsp;DE“ und „International“ · Absicherung/Prüf-Instanz siehe „Kontakte“ (QUEST).</p>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rauschen — Literatur & Medien</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+  :root{
+    --bg:#0d1b1e;--bg2:#0a1518;--ink:#eaf2f0;--muted:#8aa6a3;--line:#20393b;
+    --concrete:#5ec6c0;--episteme:#e0a458;--hot:#f06d6d;--gold:#e8c874;
+    --card:#122528;--card2:#0f2023;
+    --fnA:#5ec6c0;--fnB:#8fb8d0;--fnC:#e0a458;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:
+      radial-gradient(1200px 700px at 15% -10%, #14313033 0, transparent 60%),
+      radial-gradient(1000px 600px at 90% 0%, #2a1e0e40 0, transparent 55%),
+      var(--bg);
+    color:var(--ink);font-family:'Space Grotesk',system-ui,sans-serif;
+    line-height:1.5;-webkit-font-smoothing:antialiased;padding:48px 32px 96px;
+  }
+  .topnav{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);
+    background:#0b171acc;border-bottom:1px solid #20393b;margin:-48px -32px 34px}
+  .topnav .inner{max-width:1100px;margin:0 auto;padding:12px 32px;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+  .topnav .brand{font-family:'Fraunces',serif;font-weight:900;font-size:16px;letter-spacing:-.01em;margin-right:4px;color:#eaf2f0;text-decoration:none}
+  .topnav .brand .n{font-style:italic;font-weight:400}
+  .topnav a.navlink{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.04em;
+    color:#8aa6a3;text-decoration:none;padding:4px 0;border-bottom:2px solid transparent;transition:.15s}
+  .topnav a.navlink:hover{color:#eaf2f0}
+  .topnav a.navlink.active{color:#eaf2f0;border-bottom-color:#f06d6d}
+  @media(max-width:820px){.topnav .inner{gap:13px}.topnav .brand{width:100%}}
+
+  .wrap{max-width:1000px;margin:0 auto}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.28em;
+    text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+  h1{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(34px,5.5vw,60px);
+    line-height:1;letter-spacing:-.02em;margin:0 0 12px}
+  h1 .n{font-style:italic;font-weight:400}
+  .lede{max-width:730px;color:#c3d6d3;font-size:16.5px}
+  .lede b{color:var(--ink);font-weight:600}
+
+  .note{margin:24px 0 12px;padding:16px 18px;border-radius:12px;border:1px solid #2c4a44;
+    background:#0e2226;font-size:13.5px;color:#b9ccc9}
+  .note b{color:var(--ink)}
+
+  .legend{display:flex;flex-wrap:wrap;gap:16px;margin:22px 0 8px;font-size:12.5px;color:var(--muted)}
+  .legend span{display:inline-flex;align-items:center;gap:7px}
+  .fn{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;
+    padding:2px 7px;border-radius:20px;border:1px solid currentColor;font-weight:500}
+  .fn.A{color:var(--fnA)}.fn.B{color:var(--fnB)}.fn.C{color:var(--fnC)}
+  .tagE{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.05em;color:#7fc8a4}
+  .tagW{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.05em;color:var(--muted)}
+
+  .sec-label{display:flex;align-items:center;gap:16px;margin:40px 2px 22px}
+  .sec-label .line{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent)}
+  .sec-label .txt{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#cfe0dd;white-space:nowrap;display:flex;align-items:center;gap:10px}
+  .sec-label .txt .cnt{color:var(--muted);font-size:10px;letter-spacing:.04em}
+
+  .item{border:1px solid var(--line);border-radius:14px;margin-bottom:12px;overflow:hidden;
+    background:linear-gradient(180deg,var(--card),var(--card2))}
+  .item .ih{padding:15px 18px 13px;display:flex;gap:14px;align-items:flex-start}
+  .item .marks{flex:0 0 auto;display:flex;flex-direction:column;gap:5px;align-items:flex-start;padding-top:2px}
+  .item .body{flex:1;min-width:0}
+  .item h3{margin:0 0 3px;font-size:16px;font-weight:600;letter-spacing:-.005em}
+  .item h3 .yr{color:var(--muted);font-weight:400;font-size:14px}
+  .item .auth{font-size:13px;color:#b3c8c5;margin-bottom:7px}
+  .item .desc{font-size:13px;color:var(--muted);line-height:1.55}
+  .item .desc b{color:#cfe0dd;font-weight:600}
+  .item .lnk{margin-top:9px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .item .lnk a{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--concrete);
+    text-decoration:none;border:1px solid #5ec6c033;border-radius:20px;padding:3px 10px;transition:.15s}
+  .item .lnk a:hover{background:#5ec6c015;border-color:var(--concrete)}
+  .item .lnk .free{color:#7fc8a4;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.04em}
+  .item .lnk .paywall{color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:10px}
+
+  .closing{margin-top:40px;border:1px solid var(--line);border-radius:16px;padding:24px 26px;background:linear-gradient(135deg,#12282b,#171f1c)}
+  .closing h3{font-family:'Fraunces',serif;font-weight:600;font-size:20px;margin:0 0 12px}
+  .closing p{color:#c3d6d3;font-size:14px;margin:0 0 10px;max-width:840px}
+  .closing .q{color:var(--gold);font-weight:600}
+  .foot{margin-top:20px;color:var(--muted);font-size:11.5px;font-family:'JetBrains Mono',monospace;line-height:1.6}
+</style>
+</head>
+<body>
+<nav class="topnav"><div class="inner"><a class="brand" href="index.html">Das <span class="n">Rauschen</span></a><a class="navlink" href="index.html">Manifest</a><a class="navlink" href="mindmap.html">Systematik</a><a class="navlink" href="geraete.html">Ger&auml;te</a><a class="navlink" href="versuche.html">Versuche</a><a class="navlink" href="kontakte.html">Kontakte&nbsp;DE</a><a class="navlink" href="international.html">International</a><a class="navlink" href="fragen.html">Fragen</a><a class="navlink active" href="medien.html">Literatur</a></div></nav>
+
+<div class="wrap">
+  <div class="eyebrow">Begleitblatt zur Mindmap · Literatur &amp; Medien</div>
+  <h1>Stimmen, die vom Rauschen <span class="n">zum Signal</span> führen</h1>
+  <p class="lede">Bücher, Aufsätze und Podcasts zum Rauschen — gesammelt nicht nach Theorie-Schule, sondern danach, was auf dem Weg <b>vom Rauschen zum Signal</b> weiterhilft. Bewusst breit angelegt zum späteren Aussortieren. Wo es sinnvolle Links gibt, sind sie dabei; frei zugängliche sind als solche markiert.</p>
+
+  <div class="note"><b>Zwei kleine Markierungen pro Eintrag:</b> Die <b>Funktion</b> auf dem Weg zum Signal — <span class="fn A">A Mechanismus</span> (wie wird aus Rauschen Signal), <span class="fn B">B Methode</span> (Signal von Pseudosignal trennen, Aggregation), <span class="fn C">C Framing</span> (Begriff &amp; Sprache, das Register des Manifests). Und ob die Person <span class="tagE">▸ einbindbar</span> (lebend, ansprechbar — Anschluss an die Kontakt-Karten) oder <span class="tagW">▸ Werk/Quelle</span> ist.</p>
+
+  <div class="legend">
+    <span><span class="fn A">A</span> führt zum Mechanismus</span>
+    <span><span class="fn B">B</span> schärft Methode &amp; Aggregation</span>
+    <span><span class="fn C">C</span> liefert Begriff &amp; Framing</span>
+    <span><span class="tagE">▸ einbindbar</span></span>
+    <span><span class="tagW">▸ Werk/Quelle</span></span>
+  </div>
+
+  <!-- ============ BÜCHER ============ -->
+  <div class="sec-label"><span class="line"></span><span class="txt">Bücher <span class="cnt">· Monografien &amp; Sammelbände</span></span><span class="line"></span></div>
+
+  <div class="item"><div class="ih">
+    <div class="marks"><span class="fn A">A</span><span class="tagE">▸ einbindbar</span></div>
+    <div class="body">
+      <h3>An Epistemology of Noise <span class="yr">· 2018</span></h3>
+      <div class="auth">Cécile Malaspina · Vorwort Ray Brassier · Bloomsbury</div>
+      <div class="desc">Die <b>philosophische Summe</b> des Themas und der eine Titel, der beide Welten verbindet: bestreitet, dass Rauschen bloß Fehler/Unordnung ist, und behandelt ausdrücklich „noise trading“. Brücke von Theorie zu verwertbarem Signal.</div>
+      <div class="lnk"><a href="https://www.bloomsbury.com/us/epistemology-of-noise-9781350011816/" target="_blank">Verlag ↗</a><span class="paywall">Kauftitel</span></div>
+    </div>
+  </div></div>
+
+  <div class="item"><div class="ih">
+    <div class="marks"><span class="fn C">C</span><span class="tagE">▸ einbindbar</span></div>
+    <div class="body">
+      <h3>Noise Matters: Towards an Ontology of Noise <span class="yr">· 2013</span></h3>
+      <div class="auth">Greg Hainge · Bloomsbury</div>
+      <div class="desc">Rauschen nicht als bloßer Klang, sondern als <b>ontologische Eigenschaft aller Relationen</b>. Die philosophisch ambitionierteste Fassung im Sound-Studies-Feld; deckt Film, Musik, Ästhetik ab.</div>
+      <div class="lnk"><a href="https://www.bloomsbury.com/us/noise-matters-9781441128683/" target="_blank">Verlag ↗</a><span class="paywall">Kauftitel</span></div>
+    </div>
+  </div></div>
+
+  <div class="item"><div class="ih">
+    <div class="marks"><span class="fn C">C</span><span class="tagW">▸ Werk/Quelle</span></div>
+    <div class="body">
+      <h3>Der Parasit <span class="yr">· 1980</span></h3>
+      <div class="auth">Michel Serres · frz. Le parasite · dt. Suhrkamp 1981</div>
+      <div class="desc">Die <b>Urszene</b>: „parasite“ heißt zugleich Schmarotzer und Störgeräusch. Rauschen als konstitutives Drittes, das Kommunikation zugleich stört und ermöglicht. „Die Stadt macht den Lärm, aber der Lärm macht die Stadt.“</div>
+      <div class="lnk"><span class="paywall">Suhrkamp / JHU Press · verstorben 2019</span></div>
+    </div>
+  </div></div>
+
+  <div class="item"><div class="ih">
+    <div class="marks"><span class="fn C">C</span><span class="tagW">▸ Werk/Quelle</span></div>
+    <div class="body">
+      <h3>Bruits / Noise: The Political Economy of Music <span class="yr">· 1977</span></h3>
+      <div class="auth">Jacques Attali · engl. Übers. Brian Massumi 1985</div>
+      <div class="desc">Musik als „Kanalisierung des Rauschens“; <b>Rauschen als Vorbote sozialer Ordnung</b>. Politisch-ökonomische Lesart — anschlussfähig an den Aggregations-/Markt-Strang.</div>
+      <div class="lnk"><a href="https://www.upress.umn.edu/9780816612871/noise/" target="_blank">Verlag ↗</a><span class="paywall">Kauftitel</span></div>
+    </div>
+  </div></div>
+
+  <div class="item"><div class="ih">
+    <div class="marks"><span class="fn C">C</span><span class="tagE">▸ einbindbar</span></div>
+    <div class="body">
+      <h3>Noise, Water, Meat: A History of Sound in the Arts <span class="yr">· 1999</span></h3>
+      <div class="auth">Douglas Kahn · MIT Press</div>
+      <div class="desc">Einflussreiche <b>Geschichte des Klangs und Rauschens in den Künsten</b> der Moderne (Cage, Fluxus, Burroughs). Kahn ist aktiv (UNSW Sydney).</div>
+      <div class="lnk"><a href="https://mitpress.mit.edu/9780262611725/noise-water-meat/" target="_blank">Verlag ↗</a><span class="paywall">Kauftitel</span></div>
+    </div>
+  </div></div>
+
+  <div class="item"><div class="ih">
+    <div class="marks"><span class="fn C">C</span><span class="tagE">▸ einbindbar</span></div>
+    <div class="body">
+      <h3>Noise/Music: A History <span class="yr">· 2007</span></h3>
+      <div class="auth">Paul Hegarty · Bloomsbury/Continuum</div>
+      <div class="desc">Bataille-inspirierte <b>Theorie des Noise als Genre</b> und kulturelle Kraft. Guter Überblick über die ästhetische Tradition.</div>
+      <div class="lnk"><a href="https://www.bloomsbury.com/us/noisemusic-9780826417275/" target="_blank">Verlag ↗</a><span class="paywall">Kauftitel</span></div>
+    </div>
+  </div></div>
+
+  <div class="item"><div class="ih">
+    <div class="marks"><span class="fn C">C</span><span class="tagE">▸ einbindbar</span></div>
+    <div class="body">
+      <h3>Unlaute. Noise/Geräusch in Kultur, Medien und Wissenschaften seit 1900 <span class="yr">· 2017</span></h3>
+      <div class="auth">Hg. Sylvia Mieszkowski, Sigrid Nieberle u.a. · transcript</div>
+      <div class="desc">Die <b>umfassendste deutschsprachige Aufarbeitung</b>; enthält u.a. „Das Rauschen bei Foucault“. Guter Einstieg in die deutschsprachige Literatur.</div>
+      <div class="lnk"><a href="https://www.transcript-verlag.de/978-3-8376-2534-3/unlaute/" target="_blank">Verlag ↗</a><span class="paywall">Kauftitel</span></div>
+    </div>
+  </div></div>
+
+  <div class="item"><div class="ih">
+    <div class="marks"><span class="fn C">C</span><span class="tagW">▸ Werk/Quelle</span></div>
+    <div class="body">
+      <h3>Zwischen Rauschen und Offenbarung. Zur Kultur- und Mediengeschichte der Stimme <span class="yr">· 2002</span></h3>
+      <div class="auth">Hg. Friedrich Kittler, Thomas Macho, Sigrid Weigel · Akademie Verlag</div>
+      <div class="desc">Kittlers <b>medienarchäologische</b> Verortung des Rauschens als Spur der Materialität. Kittler verstorben 2011; Macho und Weigel aktiv.</div>
+      <div class="lnk"><a href="https://www.degruyter.com/document/doi/10.1515/9783050047611/html" target="_blank">De Gruyter ↗</a><span class="paywall">Kauftitel</span></div>
+    </div>
+  </div></div>
+
+  <div class="item"><div class="ih">
+    <div class="marks"><span class="fn A">A</span><span class="tagE">▸ einbindbar</span></div>
+    <div class="body">
+      <h3>Toward a History of Epistemic Things <span class="yr">· 1997</span></h3>
+      <div class="auth">Hans-Jörg Rheinberger · Stanford University Press</div>
+      <div class="desc">Der Begriff des <b>„epistemischen Dings“</b> — das Widerständige, Unbestimmte, das erst zum Wissensobjekt wird — ist fast eine Definition von „Rauschen wird Signal“. Nutzt Derridas „différance“; steht so auch im Manifest. Kontakt in Rolle ④.</div>
+      <div class="lnk"><a href="https://www.sup.org/books/title/?id=2472" target="_blank">Verlag ↗</a><span class="paywall">Kauftitel</span></div>
+    </div>
+  </div></div>
+
+  <div class="item"><div class="ih">
+    <div class="marks"><span class="fn A">A</span><span class="tagE">▸ einbindbar</span></div>
+    <div class="body">
+      <h3>Data Journeys in the Sciences <span class="yr">· 2020</span></h3>
+      <div class="auth">Sabina Leonelli &amp; Niccolò Tempini (Hg.) · Springer · Open Access</div>
+      <div class="desc">Was mit Daten geschieht, wenn sie <b>gesammelt, bereinigt, standardisiert und wiederverwendet</b> werden — und was dabei verlorengeht. Trifft euren Flaschenhals „das Rohsignal wird weggefiltert“ theoretisch. Kontakt in Rolle ④.</div>
+      <div class="lnk"><a href="https://link.springer.com/book/10.1007/978-3-030-37177-7" target="_blank">Volltext ↗</a><span class="free">✓ frei zugänglich</span></div>
+    </div>
+  </div></div>
+
+  <div class="item"><div class="ih">
+    <div class="marks"><span class="fn B">B</span><span class="tagW">▸ Werk/Quelle</span></div>
+    <div class="body">
+      <h3>Raw Data Is an Oxymoron <span class="yr">· 2013</span></h3>
+      <div class="auth">Lisa Gitelman (Hg.) · MIT Press · mit Bowker, Rosenberg u.a.</div>
+      <div class="desc">Schon der Titel ist euer Thema: <b>Daten sind nie „roh“</b>, sondern kulturell „gekocht“ — generiert, geschützt, interpretiert. Die medienhistorische Fassung von Leonellis Punkt. Gitelman &amp; Bowker sind einbindbar (Rolle ④); der Band selbst als Quelle.</div>
+      <div class="lnk"><a href="https://direct.mit.edu/books/edited-volume/3992/Raw-Data-Is-an-Oxymoron" target="_blank">MIT Press ↗</a><span class="paywall">Kauftitel</span></div>
+    </div>
+  </div></div>
+
+  <div class="item"><div class="ih">
+    <div class="marks"><span class="fn B">B</span><span class="tagW">▸ Werk/Quelle</span></div>
+    <div class="body">
+      <h3>Sorting Things Out: Classification and Its Consequences <span class="yr">· 1999</span></h3>
+      <div class="auth">Geoffrey C. Bowker &amp; Susan Leigh Star · MIT Press</div>
+      <div class="desc">Über das <b>Klassifizieren und das dabei Weggeworfene/Unsichtbargemachte</b> — was aus einem Ordnungsschema herausfällt. Bowker ist einbindbar (Rolle ④); Star verstorben, daher als Werk/Quelle.</div>
+      <div class="lnk"><a href="https://mitpress.mit.edu/9780262522953/sorting-things-out/" target="_blank">MIT Press ↗</a><span class="paywall">Kauftitel</span></div>
+    </div>
+  </div></div>
+
+  <div class="item"><div class="ih">
+    <div class="marks"><span class="fn C">C</span><span class="tagE">▸ einbindbar</span></div>
+    <div class="body">
+      <h3>How We Became Posthuman / Bacteria to AI <span class="yr">· 1999 / 2025</span></h3>
+      <div class="auth">N. Katherine Hayles · University of Chicago Press</div>
+      <div class="desc">Information, <b>Rauschen und Verkörperung</b>: wie „Information ihren Körper verlor“ — und, im neuen Buch, verteilte Kognition zwischen Mensch, Bakterium und KI. Die posthumanistische Fassung des Informationsbegriffs. Kontakt in Rolle ⑤.</div>
+      <div class="lnk"><a href="https://press.uchicago.edu/ucp/books/book/chicago/H/bo3769963.html" target="_blank">Verlag ↗</a><span class="paywall">Kauftitel</span></div>
+    </div>
+  </div></div>
+
+  <div class="item"><div class="ih">
+    <div class="marks"><span class="fn C">C</span><span class="tagE">▸ einbindbar</span></div>
+    <div class="body">
+      <h3>Weitere Werke der Kontakt-Personen <span class="yr">· kompakt</span></h3>
+      <div class="auth">Siegert · Halpern · Galison · Voegelin · Miyazaki/Schürmer</div>
+      <div class="desc">Werke von Personen aus den Kontakt-Karten, hier gebündelt: <b>Bernhard Siegert</b>, <i>Kulturtechnik</i> / „Repräsentation und Rauschen“ · <b>Orit Halpern</b>, <i>Beautiful Data</i> (2014) &amp; <i>The Smartness Mandate</i> (2023) — Kybernetik, Zukunftsnarrative · <b>Peter Galison</b>, <i>Image and Logic</i> — Beweiskulturen, „trading zones“ · <b>Salomé Voegelin</b>, <i>Listening to Noise and Silence</i> (2010) · <b>Miyazaki / Schürmer</b> — „Algorhythmik“ bzw. Noise/Glitch. Alle einbindbar (Rolle ④/⑤).</div>
+      <div class="lnk"><span class="paywall">diverse Verlage · siehe Kontakt-Karten</span></div>
+    </div>
+  </div></div>
+
+  <div class="item"><div class="ih">
+    <div class="marks"><span class="fn C">C</span><span class="tagW">▸ Werk/Quelle</span></div>
+    <div class="body">
+      <h3>Grundlagentexte zum Manifest <span class="yr">· das Weggeworfene &amp; Ungeformte</span></h3>
+      <div class="auth">Bataille · Derrida · Kristeva · Canguilhem</div>
+      <div class="desc">Die theoretische Grundierung des Manifests: <b>Bataille</b> (<i>l’informe</i> / <i>La Part maudite</i> — das Formlose, der verfemte Anteil), <b>Derrida</b> (<i>différance</i>, <i>marge</i>, der <i>reste</i>), <b>Kristeva</b> (<i>Pouvoirs de l’horreur</i> — das Abjekte), <b>Canguilhem</b> (<i>Le normal et le pathologique</i> — Abweichung als Normquelle). Verstorbene Klassiker: Werk/Quelle.</div>
+      <div class="lnk"><span class="paywall">diverse Ausgaben · Suhrkamp / Minuit / Zone Books</span></div>
+    </div>
+  </div></div>
+
+  <div class="item"><div class="ih">
+    <div class="marks"><span class="fn B">B</span><span class="tagE">▸ einbindbar</span></div>
+    <div class="body">
+      <h3>The Signal and the Noise <span class="yr">· 2012</span></h3>
+      <div class="auth">Nate Silver · Penguin</div>
+      <div class="desc">Populär und breit anschlussfähig: warum Vorhersagen scheitern, wie man <b>Signal von Rauschen trennt</b> (Bayes). „Ein Leitfaden, um als Daten verkleideten Bullshit zu erkennen.“ Trägt den Aggregations-/Prognosestrang.</div>
+      <div class="lnk"><a href="https://www.penguinrandomhouse.com/books/305826/the-signal-and-the-noise-by-nate-silver/" target="_blank">Verlag ↗</a><span class="paywall">Kauftitel</span></div>
+    </div>
+  </div></div>
+
+  <div class="item"><div class="ih">
+    <div class="marks"><span class="fn B">B</span><span class="tagE">▸ einbindbar</span></div>
+    <div class="body">
+      <h3>Noise: A Flaw in Human Judgment <span class="yr">· 2021</span></h3>
+      <div class="auth">Daniel Kahneman, Olivier Sibony, Cass Sunstein · Little, Brown</div>
+      <div class="desc">Wie <b>individuelles Urteilsrauschen sich bei Aggregation auslöscht</b> — die seriöse Grundlage von „das Netzwerk nimmt mehr wahr“. (Kahneman verstorben 2024; Sibony &amp; Sunstein aktiv.)</div>
+      <div class="lnk"><span class="paywall">Little, Brown · Kauftitel</span></div>
+    </div>
+  </div></div>
+
+  <div class="item"><div class="ih">
+    <div class="marks"><span class="fn B">B</span><span class="tagE">▸ einbindbar</span></div>
+    <div class="body">
+      <h3>The Information: A History, a Theory, a Flood <span class="yr">· 2011</span></h3>
+      <div class="auth">James Gleick · Pantheon</div>
+      <div class="desc">Populäre <b>Geschichte der Informationstheorie</b> (Shannon) — die gemeinsame Sprache, auf die sich alle anderen beziehen. Gute Brücke zwischen technischem und kulturellem Rauschbegriff.</div>
+      <div class="lnk"><a href="https://around.com/the-information/" target="_blank">Autor ↗</a><span class="paywall">Kauftitel</span></div>
+    </div>
+  </div></div>
+
+  <div class="item"><div class="ih">
+    <div class="marks"><span class="fn A">A</span><span class="tagE">▸ einbindbar</span></div>
+    <div class="body">
+      <h3>The Noise in Noise: Uncertainty, Randomness and Control <span class="yr">· 2023</span></h3>
+      <div class="auth">Miguel Prado Casanova · Rowman &amp; Littlefield (Media Philosophy)</div>
+      <div class="desc">Neuere Fassung an der Naht von <b>Unsicherheit, Zufall und Kontrolle</b> — verbindet Informationstheorie mit Medienphilosophie.</div>
+      <div class="lnk"><a href="https://rowman.com/ISBN/9781538168703/" target="_blank">Verlag ↗</a><span class="paywall">Kauftitel</span></div>
+    </div>
+  </div></div>
+
+  <!-- ============ AUFSÄTZE ============ -->
+  <div class="sec-label"><span class="line"></span><span class="txt">Aufsätze &amp; Texte <span class="cnt">· viele frei zugänglich</span></span><span class="line"></span></div>
+
+  <div class="item"><div class="ih">
+    <div class="marks"><span class="fn A">A</span><span class="tagW">▸ Werk/Quelle</span></div>
+    <div class="body">
+      <h3>Noise and signal as ground and figure <span class="yr">· 2022</span></h3>
+      <div class="auth">Humanities and Social Sciences Communications (Nature) · Open Access</div>
+      <div class="desc">Zieht <b>Serres, Kittler und Malaspina zusammen</b> und fragt nach Emergenz und Interferenz in Medienökologien. Ideal als frei zugänglicher, zitierbarer Einstieg.</div>
+      <div class="lnk"><a href="https://www.nature.com/articles/s41599-022-01231-3" target="_blank">Volltext ↗</a><span class="free">✓ frei zugänglich</span></div>
+    </div>
+  </div></div>
+
+  <div class="item"><div class="ih">
+    <div class="marks"><span class="fn A">A</span><span class="tagW">▸ Werk/Quelle</span></div>
+    <div class="body">
+      <h3>Stochastic resonance <span class="yr">· laufend</span></h3>
+      <div class="auth">Scholarpedia · kuratierter Fachartikel</div>
+      <div class="desc">Der zugängliche Überblick zum <b>buchstäblichen Mechanismus</b>: wie hinzugefügtes Rauschen ein schwaches Signal über die Wahrnehmungsschwelle hebt. Mit Literaturverweisen (Moss, Ward, Abbott).</div>
+      <div class="lnk"><a href="http://www.scholarpedia.org/article/Stochastic_resonance" target="_blank">Artikel ↗</a><span class="free">✓ frei zugänglich</span></div>
+    </div>
+  </div></div>
+
+  <div class="item"><div class="ih">
+    <div class="marks"><span class="fn A">A</span><span class="tagE">▸ einbindbar</span></div>
+    <div class="body">
+      <h3>What Is Stochastic Resonance? Definitions, Misconceptions, Debates <span class="yr">· 2009</span></h3>
+      <div class="auth">Mark D. McDonnell &amp; Derek Abbott · PLoS Computational Biology · Open Access</div>
+      <div class="desc">Klärt <b>sauber, was stochastische Resonanz ist und was nicht</b> — wichtig, um den Mechanismus nicht zu über-verkaufen. Abbott ist aktiv (Adelaide, in der internationalen Karte).</div>
+      <div class="lnk"><a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000348" target="_blank">Volltext ↗</a><span class="free">✓ frei zugänglich</span></div>
+    </div>
+  </div></div>
+
+  <div class="item"><div class="ih">
+    <div class="marks"><span class="fn A">A</span><span class="tagE">▸ einbindbar</span></div>
+    <div class="body">
+      <h3>The benefits of noise in neural systems: bridging theory and experiment <span class="yr">· 2011</span></h3>
+      <div class="auth">Mark D. McDonnell &amp; Lawrence M. Ward · Nature Reviews Neuroscience</div>
+      <div class="desc">Überblick, <b>wie Rauschen neuronale Informationsverarbeitung verbessern kann</b> — direkte Brücke zum Neuro-Strang (Versuchsaufbauten). Ward ist aktiv (UBC).</div>
+      <div class="lnk"><a href="https://www.nature.com/articles/nrn3061" target="_blank">Nature ↗</a><span class="paywall">Paywall</span></div>
+    </div>
+  </div></div>
+
+  <div class="item"><div class="ih">
+    <div class="marks"><span class="fn A">A</span><span class="tagE">▸ einbindbar</span></div>
+    <div class="body">
+      <h3>Pure Information: on infinity and human nature in the technical object <span class="yr">· 2019</span></h3>
+      <div class="auth">Cécile Malaspina · Culture, Theory and Critique</div>
+      <div class="desc">Malaspinas Weiterführung ihrer <b>Rausch-Epistemologie</b> in Richtung Simondon und technisches Objekt. Anschluss an ihr Hauptwerk.</div>
+      <div class="lnk"><a href="https://doi.org/10.1080/14735784.2019.1680300" target="_blank">DOI ↗</a><span class="paywall">Paywall</span></div>
+    </div>
+  </div></div>
+
+  <div class="item"><div class="ih">
+    <div class="marks"><span class="fn C">C</span><span class="tagE">▸ einbindbar</span></div>
+    <div class="body">
+      <h3>The Noise Paradigm <span class="yr">· 2012</span></h3>
+      <div class="auth">Cécile Malaspina · in: Reverberations (Hg. Goddard/Halligan/Hegarty), Continuum</div>
+      <div class="desc">Früher Aufsatz, in dem Malaspina das <b>Rauschen als eigenes Paradigma</b> entwickelt — kompakter Einstieg in ihr Denken vor dem Buch.</div>
+      <div class="lnk"><span class="paywall">in Sammelband · Kauftitel</span></div>
+    </div>
+  </div></div>
+
+  <div class="item"><div class="ih">
+    <div class="marks"><span class="fn A">A</span><span class="tagW">▸ Werk/Quelle</span></div>
+    <div class="body">
+      <h3>Stochastic resonance and sensory information processing: a tutorial <span class="yr">· 2004</span></h3>
+      <div class="auth">Frank Moss, Lawrence Ward, Walter Sannita · Clinical Neurophysiology</div>
+      <div class="desc">Das <b>Tutorial</b> zur stochastischen Resonanz in Sinnessystemen — nennt konkrete „Rausch“-Quellen im Gehirn (Synapsen, Ionenkanäle), die schwache Signale detektierbar machen.</div>
+      <div class="lnk"><a href="https://www.sciencedirect.com/science/article/pii/S1388245703003304" target="_blank">ScienceDirect ↗</a><span class="paywall">Paywall</span></div>
+    </div>
+  </div></div>
+
+  <!-- ============ PODCASTS ============ -->
+  <div class="sec-label"><span class="line"></span><span class="txt">Podcasts &amp; Audio <span class="cnt">· Stimmen, die über Noise reden</span></span><span class="line"></span></div>
+
+  <div class="item"><div class="ih">
+    <div class="marks"><span class="fn C">C</span><span class="tagE">▸ einbindbar</span></div>
+    <div class="body">
+      <h3>New Books in Sound Studies</h3>
+      <div class="auth">New Books Network · laufende Interviewreihe</div>
+      <div class="desc">Wörtlich <b>„Leute, die über Noise reden“</b>: Autor:innen-Interviews zu neuen Büchern über Klang, Rauschen, Medien. Ein realer Kanal, um Gesprächspartner:innen zu finden und anzusprechen.</div>
+      <div class="lnk"><a href="https://podcasts.apple.com/us/podcast/new-books-in-sound-studies/id1247442205" target="_blank">Apple Podcasts ↗</a><span class="free">✓ frei zugänglich</span></div>
+    </div>
+  </div></div>
+
+  <div class="item"><div class="ih">
+    <div class="marks"><span class="fn C">C</span><span class="tagE">▸ einbindbar</span></div>
+    <div class="body">
+      <h3>Tuning Time</h3>
+      <div class="auth">Benjamen Walker &amp; Mara Mills (NYU) · Sound-Studies-Podcast</div>
+      <div class="desc">Zur <b>Politik der Signalverarbeitungstechnik</b> (time-stretching) aus dem Sound-Studies-Umfeld. Mills ist interdisziplinäre Forscherin (STS, Disability, Sound Studies) — potenzielle Ansprechpartnerin.</div>
+      <div class="lnk"><a href="https://toe.prx.org/" target="_blank">Theory of Everything ↗</a><span class="free">✓ frei zugänglich</span></div>
+    </div>
+  </div></div>
+
+  <div class="item"><div class="ih">
+    <div class="marks"><span class="fn B">B</span><span class="tagE">▸ einbindbar</span></div>
+    <div class="body">
+      <h3>Buch-Podcasts zu „The Signal and the Noise“</h3>
+      <div class="auth">diverse (z.B. Wiser Than Yesterday, Spotify)</div>
+      <div class="desc">Populäre <b>Aufbereitung der Signal/Noise-Prognosethese</b> von Nate Silver — niedrigschwelliger Einstieg in den Aggregations-/Vorhersagestrang, falls das Buch zu lang ist.</div>
+      <div class="lnk"><a href="https://open.spotify.com/episode/3ew5YmjKxWKIDselVMDtY0" target="_blank">Spotify ↗</a><span class="free">✓ frei zugänglich</span></div>
+    </div>
+  </div></div>
+
+  <div class="item"><div class="ih">
+    <div class="marks"><span class="fn C">C</span><span class="tagE">▸ einbindbar</span></div>
+    <div class="body">
+      <h3>Urgent Futures — „finds signals in the noise“</h3>
+      <div class="auth">Reality Studies (Jesse Damiani) · u.a. Folge #46 mit N. Katherine Hayles</div>
+      <div class="desc">Ein Podcast, dessen <b>Motto wörtlich euer Thema ist</b>: „the show that finds signals in the noise“. Die Hayles-Folge zu <i>Bacteria to AI</i> verhandelt verteilte Kognition, Rauschen und das Nichtmenschliche — thematisch ein Direkttreffer.</div>
+      <div class="lnk"><a href="https://www.realitystudies.co/p/n-katherine-hayles-posthuman-a-new-theory-of-mind-bacteria-ai" target="_blank">Folge ↗</a><span class="free">✓ frei zugänglich</span></div>
+    </div>
+  </div></div>
+
+  <div class="item"><div class="ih">
+    <div class="marks"><span class="fn A">A</span><span class="tagE">▸ einbindbar</span></div>
+    <div class="body">
+      <h3>The HPS Podcast — Leonelli über Datenphilosophie</h3>
+      <div class="auth">History &amp; Philosophy of Science, Uni Melbourne · S3 Ep 12 mit Sabina Leonelli</div>
+      <div class="desc">Gespräch mit <b>Sabina Leonelli</b> (jetzt TU München) über offene Wissenschaft, ihre Stärken und Schattenseiten — hörbarer Einstieg in ihre „Data Journeys“-Perspektive: was beim Sammeln und Bereinigen von Daten geschieht.</div>
+      <div class="lnk"><a href="https://thehpspodcast.buzzsprout.com/2180146/episodes/15140154-s3-ep-12-sabina-leonelli-on-the-philosophy-of-open-science" target="_blank">Folge ↗</a><span class="free">✓ frei zugänglich</span></div>
+    </div>
+  </div></div>
+
+  <div class="item"><div class="ih">
+    <div class="marks"><span class="fn C">C</span><span class="tagE">▸ einbindbar</span></div>
+    <div class="body">
+      <h3>New Books Network — Rheinberger über <i>Split &amp; Splice</i></h3>
+      <div class="auth">New Books in History of Science · Interview zu <i>Split and Splice: A Phenomenology of Experimentation</i> (2023)</div>
+      <div class="desc">Rheinberger über die <b>„Unterwelt“ des Experimentierens</b> — wie aus dem Kontingenten, Widerständigen Wissen entsteht. Die hörbare Fassung genau der Denkfigur, die im Manifest steht (das epistemische Ding).</div>
+      <div class="lnk"><a href="https://newbooksnetwork.com/split-and-splice" target="_blank">Folge ↗</a><span class="free">✓ frei zugänglich</span></div>
+    </div>
+  </div></div>
+
+  <!-- ============ CLOSING ============ -->
+  <div class="closing">
+    <h3>Wie diese Sammlung zur Goldsuche steht</h3>
+    <p>Die Einträge sind bewusst <b>nicht</b> nach Theorie-Schule sortiert, sondern nach Medienart und danach, was auf dem Weg zum Signal weiterhilft: <span class="q">A liefert den Mechanismus, B schärft die Methode, C gibt Begriff und Sprache.</span> Auffällig ist die Zweiteilung des Felds — die statistisch-prognostische Linie (Silver, Kahneman, stochastische Resonanz) trägt das „wie findet man Signal“, die kultur-/medientheoretische (Serres, Malaspina, Hainge) das „was heißt das und wie erzählt man es“.</p>
+    <p>Für das eigentliche Ziel — Leute, die über Noise reden, in die Suche einzubinden — sind die <span class="tagE">▸ einbindbar</span>-markierten Autor:innen die Anknüpfungspunkte: Malaspina, Hainge, Rheinberger, Leonelli, Feest, Gitelman, Bowker, Hayles, Kahn, Hegarty, Abbott, Ward, Mills. Viele davon stehen zugleich in den Kontakt-Karten — die Literaturliste und die Ansprechpartner sind also bewusst verzahnt: Wo ein Werk überzeugt, findet sich die Person meist auch als Kontakt. Die Podcasts sind der praktischste Kanal, weil sie laufend genau solche Stimmen versammeln — mehrere der oben verlinkten Folgen (Hayles, Leonelli, Rheinberger) sind direkte Hörproben zu Personen aus den Kontakt-Karten.</p>
+    <p class="foot">Breit gesammelt zum Aussortieren · Links zu Verlags-/Originalseiten, keine Schattenbibliotheken · „frei zugänglich“ geprüft, kann sich ändern · „einbindbar“ = lebend &amp; aktiv nach Stand der Recherche, vor Kontakt gegenprüfen · Funktions-Markierung (A/B/C) ist meine Einschätzung · verweist auf „Kontakte&nbsp;DE“ und „International“.</p>
+  </div>
+</div>
+</body>
+</html>

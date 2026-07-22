@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Das Rauschen — ein Manifest & Arbeitsatlas</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+  :root{
+    --bg:#0d1b1e;--bg2:#0a1518;--ink:#eaf2f0;--muted:#8aa6a3;--line:#20393b;
+    --concrete:#5ec6c0;--episteme:#e0a458;--hot:#f06d6d;--gold:#e8c874;
+    --card:#122528;--card2:#0f2023;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:
+      radial-gradient(1200px 800px at 15% -10%, #14313033 0, transparent 60%),
+      radial-gradient(1000px 700px at 92% 0%, #2a1e0e40 0, transparent 55%),
+      var(--bg);
+    color:var(--ink);font-family:'Space Grotesk',system-ui,sans-serif;
+    line-height:1.5;-webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 32px}
+
+  /* ===== NAV (shared) ===== */
+  .topnav{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);
+    background:#0b171acc;border-bottom:1px solid var(--line)}
+  .topnav .inner{max-width:1000px;margin:0 auto;padding:12px 32px;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+  .topnav .brand{font-family:'Fraunces',serif;font-weight:900;font-size:16px;letter-spacing:-.01em;margin-right:4px}
+  .topnav .brand .n{font-style:italic;font-weight:400}
+  .topnav a.navlink{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.04em;
+    color:var(--muted);text-decoration:none;padding:4px 0;border-bottom:2px solid transparent;transition:.15s}
+  .topnav a.navlink:hover{color:var(--ink)}
+  .topnav a.navlink.active{color:var(--ink);border-bottom-color:var(--hot)}
+  @media(max-width:760px){.topnav .inner{gap:14px}.topnav .brand{width:100%}}
+
+  /* ===== HERO / MANIFEST ===== */
+  .hero{padding:70px 0 40px;position:relative;overflow:hidden}
+  .hero .eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.3em;
+    text-transform:uppercase;color:var(--muted);margin-bottom:22px}
+  h1{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(48px,9vw,104px);
+    line-height:.92;letter-spacing:-.03em;margin:0 0 8px}
+  h1 .n{font-style:italic;font-weight:400}
+  .hero .sub{font-family:'Fraunces',serif;font-style:italic;font-weight:400;
+    font-size:clamp(20px,3vw,30px);color:var(--episteme);margin:0 0 4px;letter-spacing:-.01em}
+
+  .manifest{margin:52px 0 20px;max-width:760px}
+  .manifest .mk{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.24em;
+    text-transform:uppercase;color:var(--hot);margin-bottom:26px}
+  .manifest p{font-size:17.5px;color:#d3e2df;margin:0 0 22px;line-height:1.62}
+  .manifest p.lead{font-size:21px;color:var(--ink)}
+  .manifest p b{color:var(--ink);font-weight:600}
+  .manifest .pull{
+    font-family:'Fraunces',serif;font-weight:600;font-size:clamp(24px,3.5vw,34px);
+    line-height:1.2;letter-spacing:-.01em;color:var(--ink);
+    margin:38px 0;padding-left:24px;border-left:3px solid var(--episteme)}
+  .manifest .pull .g{color:var(--gold)}
+  .manifest .cite{color:var(--muted);font-size:14px;font-style:italic}
+  .gold-line{color:var(--gold);font-weight:600}
+
+  /* ===== ATLAS NAV CARDS ===== */
+  .atlas{padding:30px 0 90px}
+  .atlas .ah{display:flex;align-items:baseline;gap:14px;margin-bottom:6px}
+  .atlas .ah h2{font-family:'Fraunces',serif;font-weight:600;font-size:28px;margin:0;letter-spacing:-.01em}
+  .atlas .ah .k{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+  .atlas .intro{color:var(--muted);font-size:15px;margin:0 0 30px;max-width:680px}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+  .tile{display:block;text-decoration:none;border:1px solid var(--line);border-radius:16px;
+    padding:22px 22px 20px;background:linear-gradient(180deg,var(--card),var(--card2));
+    transition:.18s;position:relative;overflow:hidden}
+  .tile:hover{border-color:#3a5a54;transform:translateY(-2px);box-shadow:0 16px 40px -24px #000}
+  .tile .tk{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--concrete);margin-bottom:12px}
+  .tile.c1 .tk{color:var(--concrete)}.tile.c2 .tk{color:#8fb8d0}.tile.c3 .tk{color:var(--episteme)}
+  .tile.c4 .tk{color:#c98bd0}.tile.c5 .tk{color:#d97088}
+  .tile h3{font-family:'Fraunces',serif;font-weight:600;font-size:21px;margin:0 0 8px;letter-spacing:-.01em}
+  .tile p{color:var(--muted);font-size:13.5px;margin:0;line-height:1.5}
+  .tile .arrow{margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted)}
+  .tile:hover .arrow{color:var(--ink)}
+  .tile .step{position:absolute;top:18px;right:20px;font-family:'Fraunces',serif;font-weight:900;
+    font-size:30px;opacity:.14;line-height:1}
+
+  .thread{margin-top:44px;border:1px solid var(--line);border-radius:16px;padding:24px 26px;
+    background:linear-gradient(135deg,#12282b,#171f1c)}
+  .thread h3{font-family:'Fraunces',serif;font-weight:600;font-size:19px;margin:0 0 12px}
+  .thread p{color:#c3d6d3;font-size:14px;margin:0 0 10px;max-width:820px}
+  .thread .q{color:var(--gold);font-weight:600}
+
+  footer{border-top:1px solid var(--line);padding:26px 0 60px}
+  footer .fi{color:var(--muted);font-size:11.5px;font-family:'JetBrains Mono',monospace;line-height:1.7}
+</style>
+</head>
+<body>
+
+<!-- ===== SHARED NAV ===== -->
+<nav class="topnav"><div class="inner">
+  <span class="brand">Das <span class="n">Rauschen</span></span>
+  <a class="navlink active" href="index.html">Manifest</a>
+  <a class="navlink" href="mindmap.html">Systematik</a>
+  <a class="navlink" href="geraete.html">Geräte</a>
+  <a class="navlink" href="versuche.html">Versuche</a>
+  <a class="navlink" href="kontakte.html">Kontakte&nbsp;DE</a>
+  <a class="navlink" href="international.html">International</a><a class="navlink" href="fragen.html">Fragen</a><a class="navlink" href="medien.html">Literatur</a>
+</div></nav>
+
+<div class="wrap">
+  <!-- ===== HERO + MANIFEST ===== -->
+  <section class="hero">
+    <div class="eyebrow">Ein Manifest & Arbeitsatlas</div>
+    <h1>Das <span class="n">Rauschen</span></h1>
+    <div class="sub">— und die Kunst, im Datenmüll das Gold zu finden</div>
+
+    <div class="manifest">
+      <div class="mk">Manifest</div>
+
+      <p class="lead">Jedes System zieht eine Grenze zwischen dem, was zählt, und dem, was stört. Was jenseits dieser Grenze liegt, nennen wir <b>Rauschen</b> — und werfen es weg. Dieses Wegwerfen ist keine Naturtatsache. Es ist eine Entscheidung, und wie jede Entscheidung lässt sie sich zurücknehmen.</p>
+
+      <p>Michel Serres hat im <i>Parasiten</i> gezeigt, dass die Störung kein Unfall der Kommunikation ist, sondern ihre Bedingung: das eingeschlossene Dritte, das weder Sender noch Empfänger ist und gerade dadurch den Kanal erst erzeugt. Ohne Rauschen keine Botschaft, gegen die sie sich abhebt. Der Parasit sitzt nicht am Rand des Systems — er sitzt in seiner Mitte. Und Friedrich Kittler hat daraus eine Methode gemacht: Rauschen ist die <b>Spur der Materialität</b> des Mediums, das, was sich dem Sinn und der schönen Oberfläche entzieht und trotzdem physisch <i>da</i> ist. Wer nur die Botschaft liest, überhört, woraus sie gemacht ist.</p>
+
+      <p>Doch die Störung bloß als konstitutiv zu denken, greift zu kurz. Man muss dem Verworfenen seine ganze Emphase zurückgeben. Georges Bataille nannte <i>l’informe</i>, das Formlose, keinen Mangel an Form, sondern ein Wort, das <b>herabsetzt</b> — das die Ordnung selbst unterläuft, die von jedem Ding verlangt, dass es seine Form habe. Das Formlose „hat in keinem Sinne ein Recht und wird überall zerquetscht wie eine Spinne“. Und in seiner allgemeinen Ökonomie ist der <b>verfemte Anteil</b>, die <i>part maudite</i>, jener Überschuss, den kein System nutzbringend einholen kann — das Verausgabte, das Weggeworfene, das nicht trotz, sondern <i>in</i> seiner Nutzlosigkeit souverän ist. Was eine Messung als Abfall ausscheidet, ist Batailles verfemter Teil: das, was die Bilanz nicht aufnehmen kann und das gerade darum zählt.</p>
+
+      <div class="pull">Was ein System als Störung verwirft, ist nicht wertlos.<br>Es ist das <span class="g">Ausgeschlossene</span> — und es kehrt zurück.</div>
+
+      <p>Dass es zurückkehrt, ist die Einsicht Derridas. Keine Ordnung tilgt ihr Anderes vollständig; es bleibt ein <b>Rest</b>, eine <i>restance</i>, die sich nicht auflösen lässt, und der <b>Rand</b> ist nicht das Nebensächliche, sondern das, was das Zentrum überhaupt erst konstituiert. Bedeutung selbst entspringt der <i>différance</i> — dem Abstand, dem Aufschub, der Differenz, aus der sich Signal von Signal erst scheidet. Hans-Jörg Rheinberger hat genau das in die Wissenschaft übersetzt: Das epistemische Ding ist zunächst das Widerständige, Unbestimmte — Rauschen, bis ein Experimentalsystem es zu einem Wissensobjekt formt. Julia Kristeva nennt das noch körperlicher das <b>Abjekte</b>: das Ausgestoßene, das verworfen werden muss, damit sich eine Ordnung bildet, und das an der Grenze weiterwirkt, unheimlich und produktiv. Und Georges Canguilhem, gegen jede glatte Norm gewandt, zeigt: Das Abweichende, das <i>Pathologische</i>, ist kein bloßer Defekt, sondern die Quelle, aus der das Leben neue Normen schafft. Abweichung ist nicht Fehler. Sie ist der Ort, an dem Neues entsteht.</p>
+
+      <p>Die Geschichte der Wissenschaften ist die Geschichte dieser Rückkehr. Das Zischen in Penzias’ und Wilsons Antenne war das Echo des Urknalls. Das Zittern der Pollenkörner war die Bewegung der Atome. Die DNA-Bruchstücke im Blut, für Abfall gehalten, tragen heute die Diagnose. <b>Rauschen wird Signal — nicht, weil sich die Daten ändern, sondern weil sich das Modell ändert, mit dem wir hinhören.</b> Und heute produziert jeder Mensch einen ununterbrochenen Strom solcher verworfener Signale: die Pulswellenform hinter dem Herzschlag, den aperiodischen Untergrund des EEG, das Mikrozittern der Stimme, die Feinstruktur unter jeder geglätteten Kurve. Geräte messen es und filtern es im selben Atemzug weg. Es liegt brach — das verfemte, formlose, abjekte Andere der sauberen Messung.</p>
+
+      <p class="gold-line">Genau hier setzt dieser Atlas an. Die „Gold-Nuggets im Datenmüll“ zu suchen heißt nicht, einen Rohstoff abzubauen, den andere übersahen. Es heißt, das Ausgeschlossene einzuholen — dem Formlosen eine Form zu geben, ohne es zu domestizieren, den Rest zu lesen, den die Ordnung übrig ließ. Nicht das Rauschen ist knapp. Knapp ist der Zugang zum Ungefilterten — und der Mut, im Verworfenen ein Signal zu vermuten, gepaart mit der Redlichkeit, es zu prüfen. Denn nicht jeder Rest ist ein Schatz. Aber jeder Schatz war einmal ein Rest.</p>
+
+      <p class="cite">— nach Serres (<i>Der Parasit</i>) und Kittler (<i>Grammophon Film Typewriter</i>); mit Bataille (<i>l’informe</i>, <i>La Part maudite</i>), Derrida (<i>différance</i>, <i>la marge</i>), Kristeva (<i>Pouvoirs de l’horreur</i>) und Canguilhem (<i>Le normal et le pathologique</i>).</p>
+    </div>
+  </section>
+
+  <!-- ===== ATLAS NAV ===== -->
+  <section class="atlas">
+    <div class="ah"><span class="k">Der Atlas</span></div>
+    <div class="ah"><h2>Sieben Karten, ein Weg</h2></div>
+    <p class="intro">Von der Systematik des Phänomens über die konkreten Geräte und Versuchsaufbauten bis zu den Menschen, die helfen könnten — und den Fragen, mit denen man sie in die Suche einbindet. Jede Seite verweist auf die anderen.</p>
+
+    <div class="grid">
+      <a class="tile c1" href="mindmap.html">
+        <div class="step">01</div>
+        <div class="tk">Systematik</div>
+        <h3>Die Mindmap</h3>
+        <p>Das Phänomen Rauschen entlang einer Achse — vom konkreten, messbaren Begriff zum epistemologischen Problem. Neun Äste, markiert, wo aus Störung Signal werden kann.</p>
+        <div class="arrow">→ öffnen</div>
+      </a>
+      <a class="tile c2" href="geraete.html">
+        <div class="step">02</div>
+        <div class="tk">Womit</div>
+        <h3>Die Geräte</h3>
+        <p>Was uns misst — und was es wegfiltert. Geräte nach Zugänglichkeit, ihre Nutz- und „Rausch“-Kanäle, und der Flaschenhals: die gesperrten Rohsignale.</p>
+        <div class="arrow">→ öffnen</div>
+      </a>
+      <a class="tile c2" href="versuche.html">
+        <div class="step">03</div>
+        <div class="tk">Wie</div>
+        <h3>Die Versuche</h3>
+        <p>Kontrollierte Aufbauten, die den gesetzten Reiz nutzen, um weggefilterte Nebenkanäle interpretierbar zu machen. VR/Eye-Tracking voran, je mit Absicherung.</p>
+        <div class="arrow">→ öffnen</div>
+      </a>
+      <a class="tile c3" href="kontakte.html">
+        <div class="step">04</div>
+        <div class="tk">Wer · Deutschland</div>
+        <h3>Kontakte DE</h3>
+        <p>Einrichtungen und Personen im deutschsprachigen Raum — vom neuronalen Rauschen bis zur Prüf-Instanz, die echtes Signal von Pseudosignal trennt.</p>
+        <div class="arrow">→ öffnen</div>
+      </a>
+      <a class="tile c5" href="international.html">
+        <div class="step">05</div>
+        <div class="tk">Wer · weltweit</div>
+        <h3>International</h3>
+        <p>Von Lo und Couzin bis zu den spekulativen Rändern — geordnet nach einer ehrlichen Skala von etabliert bis nicht anerkannt.</p>
+        <div class="arrow">→ öffnen</div>
+      </a>
+      <a class="tile c4" href="fragen.html">
+        <div class="step">06</div>
+        <div class="tk">Gesprächsleitfaden</div>
+        <h3>Die Fragen</h3>
+        <p>Ein Fragenkatalog in fünf Stufen — vom allgemeinen Interesse am Rauschen zur gemeinsamen Gold-Suche, der die Expert:innen zu Mitsuchenden macht statt sie auszufragen.</p>
+        <div class="arrow">→ öffnen</div>
+      </a>
+      <a class="tile c3" href="medien.html">
+        <div class="step">07</div>
+        <div class="tk">Literatur &amp; Medien</div>
+        <h3>Die Literatur</h3>
+        <p>Bücher, Aufsätze und Podcasts zum Rauschen — sortiert nach Medienart und danach, was auf dem Weg zum Signal weiterhilft. Mit Links und Markierung, wer einbindbar ist.</p>
+        <div class="arrow">→ öffnen</div>
+      </a>
+    </div>
+
+    <div class="thread">
+      <h3>Der rote Faden zwischen den Karten</h3>
+      <p>Die <b>Systematik</b> zeigt, wo im Phänomen Rauschen überhaupt Signal-Potenzial steckt. Die <b>Geräte</b> übersetzen das auf die praktische Ebene: welches Rohmaterial real anfällt und wo es verworfen wird. Die <b>Versuche</b> machen daraus konkrete Protokolle. Die beiden <b>Kontakt-Karten</b> nennen die Menschen, die beim Finden — und beim Prüfen — helfen. Die <b>Fragen</b> schließlich sind der Leitfaden, mit dem aus diesen Menschen Mitsuchende werden. Die <b>Literatur</b> sammelt die Stimmen — Bücher, Aufsätze, Podcasts —, die vom Rauschen zum Signal führen.</p>
+      <p><span class="q">Ein Prinzip verbindet alles: Ob etwas „Rauschen“ heißt, ist keine Eigenschaft der Daten, sondern eine Entscheidung des Modells. Diesen Atlas zu benutzen heißt, die Entscheidung neu zu treffen — und dann ehrlich zu prüfen, ob das gefundene Gold Gold ist.</span></p>
+    </div>
+  </section>
+</div>
+
+<footer><div class="wrap"><div class="fi">
+  Arbeitsatlas „Das Rauschen“ · sieben verlinkte Karten + Manifest · Stand Mitte 2026 · alle Personen- und Geräteangaben vor Nutzung gegenprüfen.<br>
+  Konzeptueller Rahmen nach Serres und Kittler · die Spekulativitäts-Einordnungen sind Einschätzungen des Konsensstands, keine Urteile über Beteiligte.
+</div></div></footer>
+
+</body>
+</html>
