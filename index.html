@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THE NOISE / manifesto + working atlas</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+  :root{
+    --paper:#e8e6df;--ink:#12110f;--dim:#6b6862;--line:#12110f;
+    --red:#d6301f;--blue:#1f3fd6;--acc:#12110f;--box:#f4f2ec;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--paper);color:var(--ink);
+    font-family:'JetBrains Mono',monospace;font-size:15px;line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    background-image:repeating-linear-gradient(0deg,transparent,transparent 27px,#00000008 27px,#00000008 28px);
+  }
+  a{color:inherit}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+
+  /* top status bar */
+  .statusbar{border-bottom:2px solid var(--ink);background:var(--paper);position:sticky;top:0;z-index:60}
+  .statusbar .row{max-width:1080px;margin:0 auto;padding:8px 24px;display:flex;justify-content:space-between;align-items:center;font-size:11px;letter-spacing:.05em;text-transform:uppercase}
+  .statusbar .row .l{font-weight:700}
+  .statusbar .row .r{color:var(--dim)}
+  .blink{display:inline-block;width:8px;height:8px;background:var(--red);margin-right:6px;vertical-align:middle;animation:bl 1.1s steps(1) infinite}
+  @keyframes bl{50%{opacity:0}}
+
+  /* nav */
+  nav.main{border-bottom:2px solid var(--ink);background:var(--paper);position:sticky;top:33px;z-index:55}
+  nav.main .inner{max-width:1080px;margin:0 auto;padding:0 24px;display:flex;flex-wrap:wrap}
+  nav.main a{font-size:11px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;
+    color:var(--ink);padding:11px 16px 9px;border-right:1px solid var(--ink);border-bottom:3px solid transparent}
+  nav.main a:first-child{padding-left:0;font-weight:800}
+  nav.main a:first-child{border-right:2px solid var(--ink);padding-right:16px}
+  nav.main a:hover{background:var(--ink);color:var(--paper)}
+  nav.main a.active{border-bottom-color:var(--red);font-weight:700}
+  @media(max-width:820px){nav.main a{padding:9px 10px 7px;font-size:10px}}
+
+  /* hero */
+  .hero{padding:54px 0 30px;border-bottom:2px solid var(--ink)}
+  .kicker{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--red);font-weight:700;margin-bottom:20px}
+  h1.big{font-size:clamp(52px,13vw,150px);line-height:.82;letter-spacing:-.04em;font-weight:800;margin:0 0 18px;text-transform:uppercase}
+  .hero .sub{font-size:clamp(14px,2vw,19px);max-width:640px;color:var(--ink);border-left:3px solid var(--red);padding-left:16px;font-weight:500}
+
+  .meta-strip{display:grid;grid-template-columns:repeat(4,1fr);border:2px solid var(--ink);margin:36px 0 0}
+  .meta-strip div{padding:10px 12px;border-right:1px solid var(--ink);font-size:10.5px;letter-spacing:.04em;text-transform:uppercase}
+  .meta-strip div:last-child{border-right:none}
+  .meta-strip div b{display:block;font-size:13px;text-transform:none;letter-spacing:0;margin-top:3px}
+  @media(max-width:700px){.meta-strip{grid-template-columns:repeat(2,1fr)}.meta-strip div:nth-child(2){border-right:none}}
+
+  /* manifesto */
+  .manifesto{padding:44px 0 20px;max-width:760px}
+  .mhead{font-size:11px;letter-spacing:.24em;text-transform:uppercase;font-weight:700;
+    border-bottom:2px solid var(--ink);padding-bottom:8px;margin-bottom:28px;display:flex;justify-content:space-between}
+  .mhead span:last-child{color:var(--dim)}
+  .manifesto p{font-size:15.5px;line-height:1.68;margin:0 0 20px}
+  .manifesto p.lead{font-size:18px;font-weight:500}
+  .manifesto p b{font-weight:700;background:linear-gradient(180deg,transparent 62%,#d6301f33 62%)}
+  .manifesto i{font-style:italic}
+  .pull{font-size:clamp(22px,3.4vw,32px);line-height:1.18;font-weight:700;text-transform:uppercase;
+    letter-spacing:-.01em;margin:34px 0;padding:20px;border:2px solid var(--ink);background:var(--box)}
+  .pull .g{color:var(--red)}
+  .cite{font-size:12px;color:var(--dim);line-height:1.6;border-top:1px solid var(--ink);padding-top:14px}
+  .final{border:2px solid var(--red);padding:20px;background:#d6301f0d;font-weight:500}
+
+  /* atlas index */
+  .atlas{padding:40px 0 30px;border-top:2px solid var(--ink)}
+  .atlas .ahead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+  .atlas .ahead h2{font-size:24px;text-transform:uppercase;letter-spacing:-.01em;margin:0;font-weight:800}
+  .atlas .ahead .idx{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+  .atlas .aintro{color:var(--dim);font-size:13px;max-width:620px;margin:0 0 26px}
+
+  .filegrid{border:2px solid var(--ink)}
+  .filerow{display:grid;grid-template-columns:60px 1fr 130px 24px;border-bottom:1px solid var(--ink);
+    text-decoration:none;color:var(--ink);align-items:center;transition:.1s}
+  .filerow:last-child{border-bottom:none}
+  .filerow:hover{background:var(--ink);color:var(--paper)}
+  .filerow:hover .fnum{background:var(--red);color:var(--paper)}
+  .filerow .fnum{font-weight:800;font-size:18px;padding:16px 0;text-align:center;background:var(--box);border-right:1px solid var(--ink);align-self:stretch;display:flex;align-items:center;justify-content:center}
+  .filerow:hover .fnum{border-right-color:var(--paper)}
+  .filerow .fbody{padding:13px 16px}
+  .filerow .fbody h3{margin:0 0 3px;font-size:15px;text-transform:uppercase;letter-spacing:.02em;font-weight:700}
+  .filerow .fbody p{margin:0;font-size:12px;color:var(--dim);line-height:1.45}
+  .filerow:hover .fbody p{color:#c9c6bf}
+  .filerow .ftag{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);padding:0 12px;border-left:1px solid var(--ink)}
+  .filerow:hover .ftag{color:#c9c6bf;border-left-color:var(--paper)}
+  .filerow .farr{text-align:center;font-weight:700}
+  @media(max-width:700px){.filerow{grid-template-columns:48px 1fr 24px}.filerow .ftag{display:none}}
+
+  .thread{margin-top:30px;border:2px solid var(--ink);padding:22px;background:var(--box)}
+  .thread h3{margin:0 0 12px;font-size:13px;text-transform:uppercase;letter-spacing:.1em;font-weight:700}
+  .thread p{font-size:13.5px;line-height:1.6;margin:0 0 10px;color:var(--ink)}
+  .thread .q{display:block;margin-top:12px;padding:12px;border-left:3px solid var(--red);background:var(--paper);font-weight:500}
+
+  footer{border-top:2px solid var(--ink);margin-top:20px;padding:22px 0 60px}
+  footer .fi{font-size:10.5px;color:var(--dim);line-height:1.7;letter-spacing:.02em}
+  footer .fi b{color:var(--ink)}
+</style>
+</head>
+<body>
+
+<div class="statusbar"><div class="row">
+  <span class="l"><span class="blink"></span>THE NOISE // WORKING ATLAS</span>
+  <span class="r">REV 2026.2 · EN · 08 FILES</span>
+</div></div>
+
+<nav class="main"><div class="inner">
+  <a href="index.html" class="active">THE_NOISE</a>
+  <a href="mindmap.html">01·SYSTEM</a>
+  <a href="geraete.html">02·DEVICES</a>
+  <a href="versuche.html">03·SETUPS</a>
+  <a href="kontakte.html">04·CONTACTS·DE</a>
+  <a href="international.html">05·GLOBAL</a>
+  <a href="fragen.html">06·QUESTIONS</a>
+  <a href="medien.html">07·LITERATURE</a>
+</div></nav>
+
+<div class="wrap">
+  <section class="hero">
+    <div class="kicker">Manifesto + Working Atlas</div>
+    <h1 class="big">The<br>Noise</h1>
+    <div class="sub">On finding, in the discarded data, what cannot yet be imagined — and the art of turning noise into signal.</div>
+    <div class="meta-strip">
+      <div>Status<b>Active research</b></div>
+      <div>Frame<b>Serres → Haraway</b></div>
+      <div>Files<b>7 cards + manifesto</b></div>
+      <div>Mode<b>Speculative / grounded</b></div>
+    </div>
+  </section>
+
+  <section class="manifesto">
+    <div class="mhead"><span>// MANIFESTO</span><span>the discarded returns</span></div>
+
+    <p class="lead">Every system draws a line between what counts and what interferes. Whatever falls on the far side we call <b>noise</b> — and throw away. That discarding is not a fact of nature. It is a decision, and like any decision it can be reversed.</p>
+
+    <p>In <i>The Parasite</i>, Michel Serres showed that interference is not an accident of communication but its condition: the included third that is neither sender nor receiver and that, precisely thereby, produces the channel in the first place. No noise, no message to stand out against it. The parasite does not sit at the edge of the system — it sits at its center. And Friedrich Kittler turned this into a method: noise is the <b>trace of the materiality</b> of the medium, that which escapes meaning and the clean surface and is nonetheless physically <i>there</i>. Whoever reads only the message fails to hear what it is made of.</p>
+
+    <p>But to think interference merely as constitutive falls short. One has to give the discarded its full emphasis. Georges Bataille called <i>l'informe</i>, the formless, not a lack of form but a word that <b>brings down</b> — that undermines the very order demanding every thing keep its form. The formless "has no rights in any sense and gets crushed everywhere, like a spider." And in his general economy the <b>accursed share</b>, the <i>part maudite</i>, is that surplus no system can usefully recover — the expended, the thrown-away, sovereign not despite but <i>in</i> its uselessness. What a measurement discards as waste is Bataille's accursed part: what the ledger cannot absorb, and what counts for exactly that reason.</p>
+
+    <div class="pull">What a system discards as interference is not worthless.<br>It is the <span class="g">excluded</span> — and it returns.</div>
+
+    <p>That it returns is Derrida's insight. No order erases its other completely; a <b>remainder</b> is left, a <i>restance</i> that will not dissolve, and the <b>margin</b> is not the incidental but what constitutes the center in the first place. Meaning itself arises from <i>différance</i> — the spacing, the deferral, the difference from which one signal separates from another. Hans-Jörg Rheinberger translated exactly this into science: the epistemic thing is at first the resistant, the indeterminate — noise, until an experimental system forms it into an object of knowledge. Julia Kristeva names it more bodily still, the <b>abject</b>: the cast-out that must be discarded for an order to form, and that keeps working at the border, uncanny and productive. And Georges Canguilhem, against every smooth norm, shows that the deviant, the <i>pathological</i>, is no mere defect but the source from which life creates new norms. Deviation is not error. It is the site where the new appears.</p>
+
+    <p>The history of the sciences is the history of this return. The hiss in Penzias and Wilson's antenna was the echo of the Big Bang. The trembling of pollen grains was the motion of atoms. The DNA fragments in the blood, taken for waste, now carry the diagnosis. <b>Noise becomes signal — not because the data change, but because the model with which we listen changes.</b> And today every person emits an unbroken stream of such discarded signals: the pulse waveform behind the heartbeat, the aperiodic floor of the EEG, the micro-tremor of the voice, the fine structure beneath every smoothed curve. Devices measure it and filter it away in the same breath. It lies fallow — the accursed, formless, abject other of the clean measurement.</p>
+
+    <p>With that, the real question shifts. In a present where data accrue in abundance and compute barely knows a limit, the bottleneck is no longer the technically feasible. <b>The bottleneck is imagination.</b> What stays noise stays noise not because it is unmeasurable, but because no one has conceived a model in which it counts. The discarded is the index of our imaginative limit — it marks exactly the line up to which we dare to conceive what a signal could be. And so the thinking must be inverted: not from the possible toward the actual, but <b>from the impossible</b>. For Derrida the im-possible is not what denies possibility but what first opens it — the coming that withdraws from calculability and thereby lets the new occur. This is where <i>design fiction</i> enters: it invents impossible instruments not as play but as a probe. A conceived device that reads out a noise filtered away today traces the border of the sayable — it is, with Isabelle Stengers and Donna Haraway, a <b>speculative fabulation</b>: the serious exercise of imagining that things could be otherwise, there, in the interstices of what presents itself as reality.</p>
+
+    <p class="final">This is where the atlas begins. To hunt "gold in the data trash" does not mean mining a raw material others overlooked. It means recovering the excluded — giving the formless a form without domesticating it, and taking the impossible as the condition of the possible. Noise is not scarce, and compute is long past scarce. What is scarce is the nerve to conceive a model in which the discarded speaks — paired with the honesty to then test it. For not every remainder is a treasure. But every treasure was once a remainder no one dared to think.</p>
+
+    <p class="cite">// after Serres (<i>The Parasite</i>) and Kittler (<i>Gramophone Film Typewriter</i>); with Bataille (<i>l'informe</i>, <i>The Accursed Share</i>), Derrida (<i>différance</i>, <i>the margin</i>, the im-possible), Kristeva (<i>Powers of Horror</i>) and Canguilhem (<i>The Normal and the Pathological</i>); on speculative fabulation, Stengers and Haraway.</p>
+  </section>
+
+  <section class="atlas">
+    <div class="ahead"><h2>The Atlas</h2><span class="idx">7 cards · one path</span></div>
+    <p class="aintro">From the system of the phenomenon through the concrete devices and experimental setups to the people who could help — and the questions that draw them into the search. Each page links to the others.</p>
+
+    <div class="filegrid">
+      <a class="filerow" href="mindmap.html"><div class="fnum">01</div><div class="fbody"><h3>The Mindmap</h3><p>The phenomenon of noise along one axis — from the concrete, measurable term to the epistemological problem. Nine branches, marked where interference can turn to signal.</p></div><div class="ftag">System</div><div class="farr">→</div></a>
+      <a class="filerow" href="geraete.html"><div class="fnum">02</div><div class="fbody"><h3>The Devices</h3><p>What measures us — and what it filters out. Devices by accessibility, their useful and "noise" channels, and the bottleneck: locked raw signals.</p></div><div class="ftag">With what</div><div class="farr">→</div></a>
+      <a class="filerow" href="versuche.html"><div class="fnum">03</div><div class="fbody"><h3>The Setups</h3><p>Controlled experiments that use a set stimulus to make filtered-out side channels interpretable. VR / eye-tracking first, each with safeguards.</p></div><div class="ftag">How</div><div class="farr">→</div></a>
+      <a class="filerow" href="kontakte.html"><div class="fnum">04</div><div class="fbody"><h3>Contacts · Germany</h3><p>Institutions and people in the German-speaking world — from neural noise to the review instance that tells real signal from pseudo-signal.</p></div><div class="ftag">Who · DE</div><div class="farr">→</div></a>
+      <a class="filerow" href="international.html"><div class="fnum">05</div><div class="fbody"><h3>Global</h3><p>From Lo and Couzin to the speculative fringes — ordered on an honest scale from established to not recognized.</p></div><div class="ftag">Who · world</div><div class="farr">→</div></a>
+      <a class="filerow" href="fragen.html"><div class="fnum">06</div><div class="fbody"><h3>The Questions</h3><p>A five-stage interview guide — from general interest in noise to thinking the unthinkable, turning experts into co-searchers instead of interviewees.</p></div><div class="ftag">Guide</div><div class="farr">→</div></a>
+      <a class="filerow" href="medien.html"><div class="fnum">07</div><div class="fbody"><h3>The Literature</h3><p>Books, essays and podcasts on noise — sorted by medium and by what helps on the way to signal. With links and a marker for who is reachable.</p></div><div class="ftag">Sources</div><div class="farr">→</div></a>
+    </div>
+
+    <div class="thread">
+      <h3>// the thread between the cards</h3>
+      <p>The <b>System</b> shows where the phenomenon holds signal potential at all. The <b>Devices</b> translate that to the practical level: which raw material actually accrues and where it is discarded. The <b>Setups</b> turn it into concrete protocols. The two <b>contact cards</b> name the people who help find — and test. The <b>Questions</b> are the guide that turns those people into co-searchers. The <b>Literature</b> gathers the voices that lead from noise to signal.</p>
+      <span class="q">One principle ties it all together: whether something is "noise" is not a property of the data but a decision of the model — and the limit of that model is not technology but imagination. To use this atlas is to conceive a model in which the discarded speaks — and then to honestly test whether the gold is gold.</span>
+    </div>
+  </section>
+</div>
+
+<footer><div class="wrap"><div class="fi">
+  Working atlas "The Noise" · seven linked cards + manifesto · state mid-2026 · verify all person and device details before use.<br>
+  <b>Conceptual frame after Serres and Kittler</b> · speculativeness ratings are assessments of consensus, not judgments of the people involved.
+</div></div></footer>
+
+</body>
+</html>
