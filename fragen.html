@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="only light">
+<title>THE NOISE / 06 · questions</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+  :root{
+    color-scheme:only light;--paper:#e8e6df;--ink:#12110f;--dim:#6b6862;--red:#d6301f;--blue:#1f3fd6;--box:#f4f2ec}
+  html{background:#e8e6df;color:#12110f}
+  *{box-sizing:border-box}html,body{margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;background-image:repeating-linear-gradient(0deg,transparent,transparent 27px,#00000008 27px,#00000008 28px)}
+  a{color:inherit}.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  .statusbar{border-bottom:2px solid var(--ink);background:var(--paper);position:sticky;top:0;z-index:60}
+  .statusbar .row{max-width:1080px;margin:0 auto;padding:8px 24px;display:flex;justify-content:space-between;align-items:center;font-size:11px;letter-spacing:.05em;text-transform:uppercase}
+  .statusbar .row .l{font-weight:700}.statusbar .row .r{color:var(--dim)}
+  .blink{display:inline-block;width:8px;height:8px;background:var(--red);margin-right:6px;vertical-align:middle;animation:bl 1.1s steps(1) infinite}@keyframes bl{50%{opacity:0}}
+  nav.main{border-bottom:2px solid var(--ink);background:var(--paper);position:sticky;top:33px;z-index:55}
+  nav.main .inner{max-width:1080px;margin:0 auto;padding:0 24px;display:flex;flex-wrap:wrap}
+  nav.main a{font-size:11px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;color:var(--ink);padding:11px 16px 9px;border-right:1px solid var(--ink);border-bottom:3px solid transparent}
+  nav.main a:first-child{font-weight:800;border-right:2px solid var(--ink)}
+  nav.main a:hover{background:var(--ink);color:var(--paper)}nav.main a.active{border-bottom-color:var(--red);font-weight:700}
+  @media(max-width:820px){nav.main a{padding:9px 10px 7px;font-size:10px}}
+  .head{padding:44px 0 26px;border-bottom:2px solid var(--ink)}
+  .kicker{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--red);font-weight:700;margin-bottom:16px}
+  h1{font-size:clamp(32px,6.5vw,66px);line-height:.9;letter-spacing:-.03em;font-weight:800;margin:0 0 16px;text-transform:uppercase}
+  .lede{font-size:14px;max-width:760px;line-height:1.6}.lede b{font-weight:700}
+  .note{border:2px solid var(--ink);background:var(--box);padding:14px 16px;margin:20px 0;font-size:12.5px;line-height:1.55}.note b{font-weight:700}
+  .prog{display:grid;grid-template-columns:repeat(5,1fr);border:2px solid var(--ink);margin:0 0 8px;font-size:10px}
+  .prog div{padding:9px 8px;border-right:1px solid var(--ink);text-transform:uppercase;letter-spacing:.03em;color:var(--dim)}
+  .prog div:last-child{border-right:none}.prog div b{display:block;color:var(--ink);font-size:11px;margin-bottom:2px}
+  .prog div.fin b{color:var(--red)}
+  @media(max-width:700px){.prog{grid-template-columns:1fr}.prog div{border-right:none;border-bottom:1px solid var(--ink)}}
+
+  .stage{border:2px solid var(--ink);margin-bottom:-2px}
+  .stage.fin{border-color:var(--red)}
+  .stage .sh{display:grid;grid-template-columns:56px 1fr;border-bottom:1px solid var(--ink)}
+  .stage .sh .sn{font-weight:800;font-size:20px;background:var(--box);border-right:2px solid var(--ink);display:flex;align-items:center;justify-content:center}
+  .stage.fin .sh .sn{background:var(--red);color:var(--paper)}
+  .stage .sh .st{padding:11px 14px}
+  .stage .sh .st .lab{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--red);font-weight:700}
+  .stage .sh .st h2{margin:2px 0 3px;font-size:15px;text-transform:uppercase;letter-spacing:-.01em;font-weight:800}
+  .stage .sh .st .goal{font-size:11.5px;color:var(--dim);line-height:1.45}.stage .sh .st .goal b{color:var(--ink);font-weight:700}
+  .qs{padding:6px 14px 12px}
+  .q{padding:10px 0;border-bottom:1px dashed var(--ink)}
+  .q:last-child{border-bottom:none}
+  .q .qi{font-weight:800;font-size:11px;color:var(--red);margin-bottom:3px}
+  .q .qt{font-size:13px;line-height:1.55}.q .qt b{font-weight:700}
+  .q .why{display:block;margin-top:5px;font-size:11px;color:var(--dim);line-height:1.45;padding-left:12px;border-left:2px solid var(--ink)}
+
+  .tailor{border:2px solid var(--ink);margin-top:26px}
+  .tailor .th{background:var(--ink);color:var(--paper);padding:10px 14px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:700}
+  .tailor .ti{padding:12px 14px;border-bottom:1px solid var(--ink);font-size:12px;color:var(--dim);line-height:1.5}
+  .trow{display:grid;grid-template-columns:230px 1fr;border-bottom:1px solid var(--ink);font-size:11.5px}
+  .trow:last-child{border-bottom:none}
+  .trow .tp{font-weight:700;padding:9px 14px;border-right:1px solid var(--ink);background:var(--box)}
+  .trow .tq{padding:9px 14px;line-height:1.5;font-style:italic}
+  @media(max-width:600px){.trow{grid-template-columns:1fr}.trow .tp{border-right:none;border-bottom:1px solid var(--ink)}}
+
+  .closing{margin-top:26px;border:2px solid var(--ink);padding:22px;background:var(--box)}
+  .closing h3{margin:0 0 12px;font-size:13px;text-transform:uppercase;letter-spacing:.1em;font-weight:700}
+  .closing p{font-size:12.5px;line-height:1.6;margin:0 0 10px}.closing .q2{color:var(--red);font-weight:700}
+  .foot{margin-top:14px;font-size:10px;color:var(--dim);line-height:1.6}
+  footer{border-top:2px solid var(--ink);margin-top:26px;padding:22px 0 60px}footer .fi{font-size:10.5px;color:var(--dim);line-height:1.7}
+</style>
+</head>
+<body style="background:#e8e6df;color:#12110f">
+<div style="position:fixed;top:0;left:0;right:0;bottom:0;background:#e8e6df;z-index:-1"></div>
+<div class="statusbar"><div class="row"><span class="l"><span class="blink"></span>THE NOISE // 06 · QUESTIONS</span><span class="r">from conversation to the unthinkable</span></div></div>
+<nav class="main"><div class="inner">
+  <a href="index.html">THE_NOISE</a><a href="mindmap.html">01·SYSTEM</a><a href="geraete.html">02·DEVICES</a><a href="versuche.html">03·SETUPS</a><a href="kontakte.html">04·CONTACTS·DE</a><a href="international.html">05·GLOBAL</a><a href="fragen.html" class="active">06·QUESTIONS</a><a href="gespraeche.html">07·TALKS</a><a href="medien.html">08·LITERATURE</a>
+</div></nav>
+
+<div class="wrap">
+  <div class="head">
+    <div class="kicker">Companion to the mindmap · interview guide</div>
+    <h1>From Conversation to the Unthinkable</h1>
+    <p class="lede">A question set for the conversations with the experts from both contact cards. Built as a <b>dramaturgy</b>: from general interest in noise, through their own research field, to the reversal it all runs toward — <b>the limit is not the technically feasible but imagination</b>. The aim is not to interrogate the experts but to invite them to look, together, over the edge of the feasible.</p>
+  </div>
+
+  <div class="note"><b>Basic stance:</b> each stage builds trust and shared vocabulary before the next asks more. Whoever starts at stage 5 ("what would you invent?") reaps defensiveness. Whoever works up from stage 1 has made the expert an accomplice of the question by then — and may, at the end, look over the edge of the feasible together. The <i>why</i> lines explain what each question does in the conversation.</div>
+
+  <div class="prog">
+    <div><b>1 · phenomenon</b>common ground</div>
+    <div><b>2 · their field</b>real interest</div>
+    <div><b>3 · the border</b>what counts as noise?</div>
+    <div><b>4 · the turn</b>when does it become signal?</div>
+    <div class="fin"><b>5 · reversal</b>think the unthinkable</div>
+  </div>
+
+  <div class="stage"><div class="sh"><div class="sn">01</div><div class="st"><div class="lab">Stage 1 · entry</div><h2>The phenomenon — common ground</h2><div class="goal">Goal: establish a shared understanding of "noise" before it turns technical. Shows seriousness and opens up.</div></div></div>
+    <div class="qs">
+      <div class="q"><div class="qi">1.1</div><div class="qt">What does "noise" mean in your daily work, concretely — an interference term, a measurement problem, or something more interesting?<span class="why">Opens neutrally and lets the expert define the term themselves.</span></div></div>
+      <div class="q"><div class="qi">1.2</div><div class="qt">Is there a famous story in your field where something was first taken for interference and later became a discovery?<span class="why">Activates the noise-becomes-signal figure with an example the expert chooses.</span></div></div>
+      <div class="q"><div class="qi">1.3</div><div class="qt">Where, for you, is the border between a real signal and mere chance — and how certain is that border actually?<span class="why">Introduces the central epistemological tension early, without pushing.</span></div></div>
+    </div>
+  </div>
+
+  <div class="stage"><div class="sh"><div class="sn">02</div><div class="st"><div class="lab">Stage 2 · their field</div><h2>Their research interest — real listening</h2><div class="goal">Goal: <b>do justice to the person's specific interest</b>. Here you listen, don't steer. This is the trust anchor.</div></div></div>
+    <div class="qs">
+      <div class="q"><div class="qi">2.1</div><div class="qt">What are you working on right now that really preoccupies you — and what about it is still unsolved?<span class="why">Pure invitation. You learn the living interest, not the textbook version.</span></div></div>
+      <div class="q"><div class="qi">2.2</div><div class="qt">What data accrues for you that you routinely discard or filter out because it's irrelevant to your actual question?<span class="why">The key question of the whole stage — leads gently to the side channel without valuing it yet.</span></div></div>
+      <div class="q"><div class="qi">2.3</div><div class="qt">If you had time and means, which aspect of your field would deserve more attention than it gets?<span class="why">Opens the space for underfunded, overlooked directions — often the overlooked lies there.</span></div></div>
+    </div>
+  </div>
+
+  <div class="stage"><div class="sh"><div class="sn">03</div><div class="st"><div class="lab">Stage 3 · the border</div><h2>What counts as noise for you?</h2><div class="goal">Goal: make the concrete border-drawing visible — which material falls on which side, and why exactly there?</div></div></div>
+    <div class="qs">
+      <div class="q"><div class="qi">3.1</div><div class="qt">By what criteria does your method decide what is treated as signal and what is subtracted as noise — and who set those criteria, when?<span class="why">Makes conscious that the border is a historical decision, not a law of nature (the Kittler point).</span></div></div>
+      <div class="q"><div class="qi">3.2</div><div class="qt">Are there patterns in your "noise" data you've already noticed but which have no explanation yet?<span class="why">Aims directly at anomaly-suspect material — the precursor of a nugget.</span></div></div>
+      <div class="q"><div class="qi">3.3</div><div class="qt">How much of what you filter out could you technically keep at all — and does anyone?<span class="why">Clarifies practical access to the raw material (the bottleneck from the devices card).</span></div></div>
+    </div>
+  </div>
+
+  <div class="stage"><div class="sh"><div class="sn">04</div><div class="st"><div class="lab">Stage 4 · the turn</div><h2>When does noise become signal?</h2><div class="goal">Goal: explore the conditions of the turn together — what would have to change for the discarded to become readable?</div></div></div>
+    <div class="qs">
+      <div class="q"><div class="qi">4.1</div><div class="qt">What would have to change — in measurement, compute, theory — for part of today's noise to become signal tomorrow?<span class="why">Invites the expert to imagine the turn themselves. They become co-author of the hypothesis.</span></div></div>
+      <div class="q"><div class="qi">4.2</div><div class="qt">If your discarded material were coupled with other data sources — which ones, and what might become visible?<span class="why">Introduces the aggregation/fusion idea, from the viewpoint of their field.</span></div></div>
+      <div class="q"><div class="qi">4.3</div><div class="qt">Where would you look for a spurious signal first — what would be the most obvious confusion to guard against?<span class="why">Brings in the safeguard and signals you work seriously, not just hopefully.</span></div></div>
+    </div>
+  </div>
+
+  <div class="stage fin"><div class="sh"><div class="sn">05</div><div class="st"><div class="lab">Stage 5 · think the unthinkable</div><h2>Tracing the border of the imaginable</h2><div class="goal">Goal: turn the question around. Not "where is a hidden signal," but <b>what would be conceivable if the limit were imagination, not technology</b>. The expert stays in their field — but is invited to look over its edge.</div></div></div>
+    <div class="qs">
+      <div class="q"><div class="qi">5.1</div><div class="qt">Suppose what you routinely filter out were not interference but carried information we merely lack the model for — what would one have to be able to imagine for it to become a signal?<span class="why">Turns the axis: not "is there a signal" but "what thinking would make one of it." Moves the limit from technology into imagination.</span></div></div>
+      <div class="q"><div class="qi">5.2</div><div class="qt">If you could invent a device that doesn't exist — one that reads out exactly what is filtered away today — what would it measure, and what could it make visible?<span class="why">Brings design fiction into the conversation as a tool. The conceived device lets you stay concrete and still think past the feasible.</span></div></div>
+      <div class="q"><div class="qi">5.3</div><div class="qt">Where, for you, is the border between a bold but serious idea and mere fantasy — what would you pin that on in the concrete case?<span class="why">Keeps the speculative flight grounded: lets the expert name the criterion for seriousness. Guards against arbitrariness without smothering imagination.</span></div></div>
+      <div class="q"><div class="qi">5.4</div><div class="qt">What about this whole figure of thought — that not the feasible but imagination is the real limit — do you consider overrated or naive?<span class="why">The most honest question. Invites objection, guards against self-deception, and paradoxically strengthens trust. Scientists especially take the invitation to object seriously.</span></div></div>
+    </div>
+  </div>
+
+  <div class="tailor">
+    <div class="th">// tailoring · accents by interlocutor</div>
+    <div class="ti">The set above fits everyone. These accents pick up the specific interest of individual profiles — one extra question each, slotted into stages 2–3. Illustrative, not exhaustive.</div>
+    <div class="trow"><div class="tp">Theorist of neural noise · stochastic resonance</div><div class="tq">"Under what conditions does noise help signal transmission rather than disturbing it — and could that be induced deliberately?"</div></div>
+    <div class="trow"><div class="tp">Fragmentomics / biomarker · data-trash pioneer</div><div class="tq">"Which discarded fraction of your material could, like the DNA fragments once, be the next source of information?"</div></div>
+    <div class="trow"><div class="tp">Collective / swarm research · emergent sensing</div><div class="tq">"What transfers from your animal groups to human networks — and where does the analogy break?"</div></div>
+    <div class="trow"><div class="tp">Neuro-measurement / EEG aging · aperiodic part</div><div class="tq">"How robust is the 1/f part really as a marker — and where does evidence end, where does narrative begin?"</div></div>
+    <div class="trow"><div class="tp">Econometrics / aggregation · signal extraction</div><div class="tq">"How do you separate real signal from overfitting in high-dimensional, noisy data — and what is it worth economically?"</div></div>
+    <div class="trow"><div class="tp">Metascience / review instance · corrective</div><div class="tq">"How do you fastest recognize that a celebrated 'signal' was in truth noise?"</div></div>
+    <div class="trow"><div class="tp">Media / science theory · framing</div><div class="tq">"How has the term 'noise' shifted historically — and what does that reveal about today's border-drawing?"</div></div>
+    <div class="trow"><div class="tp">Speculative fringes · with caution</div><div class="tq">"What distinguishes your approach methodically from a post-hoc pattern search in chance?" (probing, not ingratiating)</div></div>
+  </div>
+
+  <div class="closing">
+    <h3>// how this set relates to the atlas</h3>
+    <p>It is the link between the <b>contact cards</b> (who) and the practical work (<b>Devices</b>, <b>Setups</b>). The five stages retrace, in miniature, the path of the whole atlas: from the phenomenon (System) through the concrete (Devices/Setups) to the reversal the manifesto carries — from the usable to the imaginable. The tailoring lines pick up the profiles from both contact lists.</p>
+    <p><span class="q2">One principle carries the whole guide: you don't lift the discarded by asking experts for the hidden signal — but by drawing them so far into the question that they look, with you, over the edge of the feasible. For the limit is not technology but what we dare to conceive. And the most honest question (5.4) is the one that invites doubting exactly this figure of thought.</span></p>
+    <p class="foot">Questions meant as starting points, not a checklist to tick off · order matters more than completeness · tailoring profiles refer to "Contacts DE" and "Global" · safeguard/review instance see "Contacts" (QUEST).</p>
+  </div>
+</div>
+
+<footer><div class="wrap"><div class="fi">06 · QUESTIONS — five-stage interview guide · order matters more than completeness · stage 5 turns the axis toward imagination.</div></div></footer>
+</body>
+</html>
